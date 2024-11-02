@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BE6FE212-08F1-4130-BB80-9E2989250F2A}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PresentationLayer</RootNamespace>
+    <AssemblyName>PresentationLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BusinessObjectLayer">
+      <HintPath>..\BusinessObjectLayer\bin\Debug\BusinessObjectLayer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Models\bin\Debug\Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\QuotesController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Quotes.cs" />
+    <Compile Include="Models\ViewModels\QuoteViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\easy-responsive-tabs.css" />
+    <Content Include="Content\fin-logos\4M.png" />
+    <Content Include="Content\fin-logos\6Y.png" />
+    <Content Include="Content\fin-logos\9I.png" />
+    <Content Include="Content\fin-logos\9W.png" />
+    <Content Include="Content\fin-logos\AA.png" />
+    <Content Include="Content\fin-logos\AC.png" />
+    <Content Include="Content\fin-logos\aces.png" />
+    <Content Include="Content\fin-logos\AF.png" />
+    <Content Include="Content\fin-logos\AI.png" />
+    <Content Include="Content\fin-logos\AM.png" />
+    <Content Include="Content\fin-logos\AN.png" />
+    <Content Include="Content\fin-logos\AP.png" />
+    <Content Include="Content\fin-logos\AQ.png" />
+    <Content Include="Content\fin-logos\AR.png" />
+    <Content Include="Content\fin-logos\AS.png" />
+    <Content Include="Content\fin-logos\AT.png" />
+    <Content Include="Content\fin-logos\AV.png" />
+    <Content Include="Content\fin-logos\AY.png" />
+    <Content Include="Content\fin-logos\AZ.png" />
+    <Content Include="Content\fin-logos\BA.png" />
+    <Content Include="Content\fin-logos\BD.png" />
+    <Content Include="Content\fin-logos\BR.png" />
+    <Content Include="Content\fin-logos\BW.png" />
+    <Content Include="Content\fin-logos\C9.png" />
+    <Content Include="Content\fin-logos\CA.png" />
+    <Content Include="Content\fin-logos\CI.png" />
+    <Content Include="Content\fin-logos\CM.png" />
+    <Content Include="Content\fin-logos\CO.png" />
+    <Content Include="Content\fin-logos\CU.png" />
+    <Content Include="Content\fin-logos\CX.png" />
+    <Content Include="Content\fin-logos\CZ.png" />
+    <Content Include="Content\fin-logos\D9.png" />
+    <Content Include="Content\fin-logos\DE.png" />
+    <Content Include="Content\fin-logos\DI.png" />
+    <Content Include="Content\fin-logos\DL.png" />
+    <Content Include="Content\fin-logos\EI.png" />
+    <Content Include="Content\fin-logos\EK.png" />
+    <Content Include="Content\fin-logos\EN.png" />
+    <Content Include="Content\fin-logos\ET.png" />
+    <Content Include="Content\fin-logos\EW.png" />
+    <Content Include="Content\fin-logos\EY.png" />
+    <Content Include="Content\fin-logos\FI.png" />
+    <Content Include="Content\fin-logos\FJ.png" />
+    <Content Include="Content\fin-logos\FZ.png" />
+    <Content Include="Content\fin-logos\G0.png" />
+    <Content Include="Content\fin-logos\GF.png" />
+    <Content Include="Content\fin-logos\GT.png" />
+    <Content Include="Content\fin-logos\GU.png" />
+    <Content Include="Content\fin-logos\HP.png" />
+    <Content Include="Content\fin-logos\HQ.png" />
+    <Content Include="Content\fin-logos\HU.png" />
+    <Content Include="Content\fin-logos\IB.png" />
+    <Content Include="Content\fin-logos\IN.png" />
+    <Content Include="Content\fin-logos\index.html" />
+    <Content Include="Content\fin-logos\IQ.png" />
+    <Content Include="Content\fin-logos\IT.png" />
+    <Content Include="Content\fin-logos\IY.png" />
+    <Content Include="Content\fin-logos\JD.png" />
+    <Content Include="Content\fin-logos\JJ.png" />
+    <Content Include="Content\fin-logos\JK.png" />
+    <Content Include="Content\fin-logos\JL.png" />
+    <Content Include="Content\fin-logos\JM.png" />
+    <Content Include="Content\fin-logos\JP.png" />
+    <Content Include="Content\fin-logos\JU.png" />
+    <Content Include="Content\fin-logos\KA.png" />
+    <Content Include="Content\fin-logos\KE.png" />
+    <Content Include="Content\fin-logos\KJ.png" />
+    <Content Include="Content\fin-logos\KL.png" />
+    <Content Include="Content\fin-logos\KM.png" />
+    <Content Include="Content\fin-logos\KQ.png" />
+    <Content Include="Content\fin-logos\KU.png" />
+    <Content Include="Content\fin-logos\LA.png" />
+    <Content Include="Content\fin-logos\LC.png" />
+    <Content Include="Content\fin-logos\LH.png" />
+    <Content Include="Content\fin-logos\LO.png" />
+    <Content Include="Content\fin-logos\LP.png" />
+    <Content Include="Content\fin-logos\LR.png" />
+    <Content Include="Content\fin-logos\LT.png" />
+    <Content Include="Content\fin-logos\LX.png" />
+    <Content Include="Content\fin-logos\LY.png" />
+    <Content Include="Content\fin-logos\LZ.png" />
+    <Content Include="Content\fin-logos\MA.png" />
+    <Content Include="Content\fin-logos\ME.png" />
+    <Content Include="Content\fin-logos\MH.png" />
+    <Content Include="Content\fin-logos\MP.png" />
+    <Content Include="Content\fin-logos\MQ.png" />
+    <Content Include="Content\fin-logos\MS.png" />
+    <Content Include="Content\fin-logos\MU.png" />
+    <Content Include="Content\fin-logos\MX.png" />
+    <Content Include="Content\fin-logos\NG.png" />
+    <Content Include="Content\fin-logos\NH.png" />
+    <Content Include="Content\fin-logos\NI.png" />
+    <Content Include="Content\fin-logos\NK.png" />
+    <Content Include="Content\fin-logos\NW.png" />
+    <Content Include="Content\fin-logos\NZ.png" />
+    <Content Include="Content\fin-logos\OA.png" />
+    <Content Include="Content\fin-logos\OK.png" />
+    <Content Include="Content\fin-logos\OS.png" />
+    <Content Include="Content\fin-logos\OU.png" />
+    <Content Include="Content\fin-logos\OZ.png" />
+    <Content Include="Content\fin-logos\PD.png" />
+    <Content Include="Content\fin-logos\PF.png" />
+    <Content Include="Content\fin-logos\PK.png" />
+    <Content Include="Content\fin-logos\PR.png" />
+    <Content Include="Content\fin-logos\PS.png" />
+    <Content Include="Content\fin-logos\QF.png" />
+    <Content Include="Content\fin-logos\QR.png" />
+    <Content Include="Content\fin-logos\RB.png" />
+    <Content Include="Content\fin-logos\RG.png" />
+    <Content Include="Content\fin-logos\RO.png" />
+    <Content Include="Content\fin-logos\S2.png" />
+    <Content Include="Content\fin-logos\SA.png" />
+    <Content Include="Content\fin-logos\SG.png" />
+    <Content Include="Content\fin-logos\SK.png" />
+    <Content Include="Content\fin-logos\SN.png" />
+    <Content Include="Content\fin-logos\SQ.png" />
+    <Content Include="Content\fin-logos\SU.png" />
+    <Content Include="Content\fin-logos\SV.png" />
+    <Content Include="Content\fin-logos\SW.png" />
+    <Content Include="Content\fin-logos\TA.png" />
+    <Content Include="Content\fin-logos\TG.png" />
+    <Content Include="Content\fin-logos\TK.png" />
+    <Content Include="Content\fin-logos\TM.png" />
+    <Content Include="Content\fin-logos\TN.png" />
+    <Content Include="Content\fin-logos\TP.png" />
+    <Content Include="Content\fin-logos\TR.png" />
+    <Content Include="Content\fin-logos\TS.png" />
+    <Content Include="Content\fin-logos\UA.png" />
+    <Content Include="Content\fin-logos\UK.png" />
+    <Content Include="Content\fin-logos\UL.png" />
+    <Content Include="Content\fin-logos\UM.png" />
+    <Content Include="Content\fin-logos\UN.png" />
+    <Content Include="Content\fin-logos\US.png" />
+    <Content Include="Content\fin-logos\UX.png" />
+    <Content Include="Content\fin-logos\VK.png" />
+    <Content Include="Content\fin-logos\VO.png" />
+    <Content Include="Content\fin-logos\VS.png" />
+    <Content Include="Content\fin-logos\VV.png" />
+    <Content Include="Content\fin-logos\VX.png" />
+    <Content Include="Content\fin-logos\WA.png" />
+    <Content Include="Content\fin-logos\WR.png" />
+    <Content Include="Content\fin-logos\WS.png" />
+    <Content Include="Content\fin-logos\WW.png" />
+    <Content Include="Content\fin-logos\WY.png" />
+    <Content Include="Content\images\air-canada-airline.png" />
+    <Content Include="Content\images\cross.jpg" />
+    <Content Include="Content\images\duration-icon.png" />
+    <Content Include="Content\images\email-icon.png" />
+    <Content Include="Content\images\food-icon.png" />
+    <Content Include="Content\images\inbound-icon-small.png" />
+    <Content Include="Content\images\inbound-icon.png" />
+    <Content Include="Content\images\outbound-icon-small.png" />
+    <Content Include="Content\images\outbound-icon.png" />
+    <Content Include="Content\images\plane-icon.png" />
+    <Content Include="Content\images\power-icon.png" />
+    <Content Include="Content\images\print-icon.png" />
+    <Content Include="Content\images\spice-airline.png" />
+    <Content Include="Content\images\video-icon.png" />
+    <Content Include="Content\images\wifi-icon.png" />
+    <Content Include="Content\Internal-Widget\css\bootstrap.css" />
+    <Content Include="Content\Internal-Widget\css\font-awesome.css" />
+    <Content Include="Content\Internal-Widget\css\internal-search-widget-tabs.css" />
+    <Content Include="Content\Internal-Widget\css\internal-search-widget.css" />
+    <Content Include="Content\Internal-Widget\css\jslider.css" />
+    <Content Include="Content\Internal-Widget\css\jslider.round.plastic.css" />
+    <Content Include="Content\Internal-Widget\css\search-widget.css" />
+    <Content Include="Content\Internal-Widget\images\favicon.png" />
+    <Content Include="Content\Internal-Widget\js\autocomplete.js" />
+    <Content Include="Content\Internal-Widget\js\easyResponsiveTabs.js" />
+    <Content Include="Content\Internal-Widget\js\search-w.js" />
+    <Content Include="Content\login-bar.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\icomoon.svg" />
+    <Content Include="Global.asax" />
+    <None Include="App_Data\Web.Configurations\Web.ConnectionStrings.config" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\icomoon.eot" />
+    <Content Include="fonts\icomoon.ttf" />
+    <Content Include="fonts\icomoon.woff" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\GetQuotes.cshtml" />
+    <Content Include="Views\Home\DisplayQuotes.cshtml" />
+    <Content Include="Views\Quotes\Index.cshtml" />
+    <Content Include="Views\Quotes\GetQuotes.cshtml" />
+    <Content Include="Views\Shared\_FlightDetails.cshtml" />
+    <Content Include="Views\Quotes\DisplayQuotes.cshtml" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Views\Quotes\GetTest.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppLogs\PresentationLayer\LogFiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>48946</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48946/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

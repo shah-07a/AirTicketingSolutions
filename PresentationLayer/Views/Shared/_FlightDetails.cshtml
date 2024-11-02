@@ -1,0 +1,105 @@
+﻿@using Models.Sabre.JsonModels.FilteredResponse
+@{
+    FilteredSearchResponse search_response = null;
+    if (ViewBag.ResponseResult != null)
+    {
+        search_response = (FilteredSearchResponse)ViewBag.ResponseResult;
+    }
+    if (search_response == null && search_response.Data.OTA_AirLowFareSearchRS[0].PricedItineraries[0].PricedItinerary.Count == 0)
+    {
+        <div>
+            <h3>No flights are available for the selected criteria, please change your criteria and try again</h3>
+        </div>
+    }
+    else
+    {
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">More Outbound Options</h4>
+    </div>
+    <div class="modal-body"> 
+        
+        <!--summary --> 
+        <div class="summary-model">
+            <label>
+                @{ 
+                    string seqNo = ViewData["SequenceNumber"].ToString();
+                    string totlFare = ViewData["TotalFare"].ToString();
+                    string valdatingArlin = string.Empty;
+                    string valdatingArlin1 = ViewData["ValidatingAirline"].ToString();
+
+                    foreach (var pricdItinery in search_response.Data.OTA_AirLowFareSearchRS[0].PricedItineraries[0].PricedItinerary)
+                    {
+                        PresentationLayer.Models.ViewModels.QuoteViewModel objQuoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                        PresentationLayer.Models.Fares objFares = new PresentationLayer.Models.Fares();
+                        if (pricdItinery.AirItineraryPricingInfo.Count > 0)
+                        {
+                            objFares = objQuoteViewModel.GetFares(pricdItinery.AirItineraryPricingInfo[0], null);
+                            valdatingArlin = pricdItinery.AirItineraryPricingInfo[0].TPA_Extensions[0].ValidatingCarrier[0].Default[0].Code;
+                        }
+                        else if (pricdItinery.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo.Count > 0)
+                        {
+                            valdatingArlin = pricdItinery.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo[0].TPA_Extensions[0].ValidatingCarrier[0].Default[0].Code;
+                            objFares = objQuoteViewModel.GetFares(null, pricdItinery.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo[0]);
+                        }
+                        if (totlFare == objFares.TotalFare.ToString() && valdatingArlin == valdatingArlin1)
+                        {
+                            objQuoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                            PresentationLayer.Models.Quotes objOutbond = objQuoteViewModel.GetFlightSegments(pricdItinery.AirItinerary[0].OriginDestinationOptions[0], 0);
+                                <div class="row">
+                                    @{
+                                        if (seqNo == pricdItinery.SequenceNumber.ToString())
+                                        {
+                                            <div class="col-sm-1 col-xs-2"><input name="more" required type="radio" checked="checked" value=""></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-1 col-xs-2"><input name="more" required type="radio" value=""></div>
+                                        }
+                                    }
+
+                                    <div class="col-sm-3 col-xs-8">
+                                        <!-- outbound -->
+                                        <div class="outbound">
+                                            @Html.Raw(objOutbond.Flight)
+                                        </div>
+                                        <!-- outbound //-->
+                                    </div>
+                                    <div class="col-md-2 col-xs-4">
+                                        <!--departure time -->
+                                        <div class="departure-time">
+                                            @Html.Raw(objOutbond.DepatureTime)
+                                        </div>
+                                        <!--departure time //-->
+                                    </div>
+                                    <div class="col-md-4 col-xs-5">
+                                        <!--duration -->
+                                        <div class="duration">
+                                            @Html.Raw(objOutbond.Duration)
+                                        </div>
+                                        <!--duration //-->
+                                    </div>
+                                    <div class="col-md-2 col-xs-10 col-xs-offset-2 col-md-offset-0 col-lg-offset-0">
+
+                                        <!--arrival time -->
+                                        <div class="arrival-time">
+                                            @Html.Raw(objOutbond.ArrivalTime)
+                                        </div>
+                                        <!--arrival time //-->
+
+                                    </div>
+
+                                </div>
+                        }
+                    }
+                    }
+            </label>
+        </div>
+        <!--summary //-->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+        }
+    }

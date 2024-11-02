@@ -1,0 +1,338 @@
+body { margin:0px; padding:0px; line-height:20px; font-family: 'Poppins', sans-serif; font-weight:400;}
+
+.clear { clear:both;}
+h1, h2, h3, h4, h5, h6 { margin:0px;}
+
+.container { max-width:1170px;}
+.quote-section { margin:40px 0px 0px 0px;}
+.bound { margin:0px 0px 0px 0px;}
+.bound p { font-size:14px; font-weight:600; color:#000; display:inline-block; float:left;}
+.bound hr { margin:10px 0 0 10px; display:inline-block; float:left; width:68%;}
+.bound a { text-decoration:underline; float:right; color:#000; font-size:13px; }
+.bound img { float:left; margin:0px 6px 0px 0px;}
+
+.outbound { margin:15px 0px 0px 0px; text-align:left;}
+.outbound h5 { font-size:12px; font-weight:300; color:#262626;}
+/*=== .outbound p { color:#262626; font-weight:600; font-size:13px;} ===*/
+.outbound p {
+		color: #262626;
+		font-weight: 600;
+		font-size: 13px;
+		padding: 0 0 0 40px;
+}
+
+.outbound img { float:left; margin:0 8px 0 0;}
+
+/*=== .departure-time { text-align:left; margin:10px 0px 0px 0px;} ===*/
+.departure-time {
+	text-align: left;
+	margin: 10px 0px 0px 0px;
+}
+
+.departure-time h3 { color:#000; font-size:20px; font-weight:700;}
+.dep-date { color:#7f7f7f; font-size:12px; font-weight:300; line-height:14px;}
+.dep-city {color:#1a1a1a; font-size:11px; font-weight:300; line-height:14px;}
+
+.duration { text-align:center; margin:15px 0px 0px 0px;}
+.duration p { font-size:11px; color:#1a1a1a; font-weight:300; border-bottom:1px solid #ccc; display:inline-block; }
+.duration span { display:block; color:#7f7f7f; font-size:12px;}
+
+.arrival-time { text-align:right; margin:10px 0px 0px 0px;}
+.arrival-time h3 { color:#000; font-size:20px; font-weight:700;}
+.arr-date { color:#7f7f7f; font-size:12px; font-weight:300; line-height:14px;}
+.arr-city {color:#1a1a1a; font-size:11px; font-weight:300; line-height:14px;}
+
+.summary { margin:0px 0px 8px 0px;}
+
+.inbound { margin:15px 0px 0px 0px;}
+.inbound h5 { font-size:12px; font-weight:300; color:#262626;}
+/*=== .inbound p { color:#262626; font-weight:600; font-size:13px;} ===*/
+.inbound p {
+		color: #262626;
+		font-weight: 600;
+		font-size: 13px;
+		padding: 0 0 0 40px;
+}
+
+.inbound img { float:left; margin:0 8px 0 0;}
+
+.total-price { padding:15px 12px 0px 12px; text-align:center; line-height:18px; border-left:1px solid #ddd; min-height:180px;}
+.total-price p { font-size:12px; margin-top:10px; color:#4c4c4c; font-weight:500; }
+.total-price p span {font-size:19px; color:#000; font-weight:700; white-space:nowrap;}
+.total-price .avg { text-align:center; font-size:11px; color:#7f7f7f; padding:10px 0px 0px 0px;}
+.functional-icons a { margin:0px 2px;}
+
+.book-btn { margin:15px 0px 0px 0px;}
+.book-btn a { background:#898989; padding:5px 10px; border-radius:4px; color:#fff;}
+
+
+.flight-total-price { padding:0px 12px 0px 12px; line-height:18px;}
+.flight-total-price p { font-size:12px; margin-top:10px; color:#4c4c4c; font-weight:500; display:inline-block; }
+.flight-total-price p span {font-size:19px; color:#000; font-weight:700; white-space:nowrap;}
+.flight-total-price .avg { display:inline-block; text-align:center; font-size:11px; color:#7f7f7f; padding:10px 0px 0px 0px;}
+.flight-functional-icons { display:inline-block; float:right; margin:13px 15px 0px 0px;}
+.flight-functional-icons a { margin:0px 2px;}
+
+.flight-total-price .book-btn { margin:15px 0px 0px 0px; float:right;}
+.flight-total-price .book-btn a { background:#898989; padding:5px 10px; border-radius:4px; color:#fff;}
+
+#child-parentHorizontalTab { padding:20px 0px 0px 0px;}
+#child-parentHorizontalTab .resp-tabs-list li { padding-left:30px; padding-right:30px; text-align:center;}
+
+#child-parentHorizontalTab .resp-tab-active {padding:12px 30px 14px 30px !important}
+
+
+.flight-detail-outbound { margin:0px 0px 0px 0px;}
+/*===.flight-detail-outbound h5 { font-size:12px; font-weight:300; color:#262626;} ===*/
+.flight-detail-outbound h5 {
+	font-size: 12px;
+	font-weight: 300;
+	color: #262626;
+	margin-top: 0;
+}
+
+.flight-detail-outbound p { color:#848484; font-weight:300; font-size:12px;}
+.flight-detail-outbound img { float:left; margin:0 8px 0 0;}
+
+.cabin { font-size:12px; color:#848484; text-align:right;}
+
+.detail-flight { padding:14px 0px 0px 0px;}
+.date-detail { color:#000; font-weight:500; font-size:18px;}
+/*=== .date-detail span { font-size:14px; color:#000; vertical-align:top; font-weight:500;} ===*/
+.date-detail span {
+		font-size: 13px;
+		color: #000;
+		vertical-align: top;
+		font-weight: 500;
+		display: block;
+}
+
+.detail-flight p { color:#7f7f7f; font-size:12px;}
+
+.duration-detail { text-align:center; padding:14px 0px 0px 0px;}
+.duration-detail p { font-size:11px; color:#000; font-weight:500;}
+
+.right-txt { text-align:right;}
+
+.layover { font-size:12px; font-weight:300; color:#000; background:#f5f3f3; border-radius:50px; text-align:center; margin:7px 0px 12px 0px; padding:3px 0px 3px 0px;}
+
+.total-trip { font-size:12px; font-weight:300; color:#000; background:#f5f3f3; border-radius:50px; text-align:center; margin:7px 0px 0px 0px; padding:3px 0px 3px 0px;}
+
+.flight-detail-right-section { padding-bottom: 5px; background:#f5f3f3; border:1px solid #dedede; margin:20px 0px 0px 0px;}
+.full-row { padding:14px 10px 17px 10px; border-bottom:1px solid #d5d4d4;}
+/*=== .full-row h5 { vertical-align:middle; font-size:13px; font-weight:500; width:40%; color:#000; display:inline-block;} ===*/
+
+.full-row h5 {
+	vertical-align: middle;
+	font-size: 13px;
+	font-weight: 500;
+	width: 70%;
+	color: #000;
+	display: inline-block;
+	margin-top: 0;
+}
+
+
+.full-row p { vertical-align:middle; color:#5c5c5c; line-height:16px; font-weight:300; font-size:12px; display:inline-block;}
+.full-row p span { font-weight:600; color:#000;}
+
+.baggage-section {border-bottom:1px solid #d5d4d4;}
+.baggage-info { margin:15px 0px 15px 0px; text-align:center;}
+.baggage-info title { font-size:12px; font-weight:300; color:#5c5c5c; display:block;}
+.baggage-info p { font-size:13px; color:#262626; font-weight:500;}
+
+.right-border { border-right:1px solid #ddd;}
+
+.other-features {
+	margin: 15px 0px 0px 0px;
+	padding: 0 12px 0 16px;
+}
+.other-features ul { margin:0px; padding:0px;}
+.other-features ul li {
+	list-style-type: none;
+	color: #acabab;
+	display: inline-block;
+	width: 49%;
+	padding-bottom: 10px;
+	padding-top:3px;
+}
+
+.tab-style.resp-tabs-list li { border-radius:6px 6px 0 0; border-top:1px solid #a4a4a4; border-left:1px solid #a4a4a4; border-right:1px solid #a4a4a4; margin:0 10px 0 0;}
+
+#tab1.first-content.resp-tab-content.fare-details-tab {
+	padding: 15px 0px 12px 14px;
+}
+
+.modal-dialog {
+	width: 750px;
+}
+
+.summary-model { margin:0px 0px 2px 0px; padding:0px 15px 0px 0px; background:#f5f5f5;}
+.summary-model label { width:100%; font-weight:normal;}
+.summary-model:hover { background:#f0efef;}
+.summary-model input[type="radio"] { margin-top:27px;}
+.summary-model .col-sm-1 {
+	padding-right: 0;
+}
+
+.modal-box .modal-header {
+	background: #e3e3e3;
+}
+.modal-box .modal-header h4 {
+	font-size: 14px;
+	padding: 0px 0px 0px 8px;
+}
+.modal-box button {
+	margin: 0px 6px 0 0px;
+	top: 2px;
+	position: relative;
+}
+
+.modal-box .modal-footer {
+	margin-top: 0px;
+	padding: 11px 15px 16px;
+	text-align: right;
+	border-top: 1px solid #e5e5e5;
+}
+
+.layover2 { font-size:12px; font-weight:300; color:#000; background:#fff; border-radius:50px; text-align:center; margin:7px 0px 3px 0px; padding:3px 0px 3px 0px;}
+
+.multiple-duration { text-align:center; margin:24px 0px 0px 0px;}
+.multiple-duration p { font-size:11px; color:#1a1a1a; font-weight:300; display:inline-block; }
+.multiple-duration span { display:block; color:#7f7f7f; font-size:12px;}
+
+.modal-total-trip { font-size:12px; font-weight:300; color:#000; background:#fff; border-radius:50px; text-align:center; margin:7px 0px 0px 0px; padding:3px 0px 3px 0px;}
+
+@media screen and (max-width:768px) {
+	.container {
+		max-width: inherit;
+		width: 100%;
+	}
+
+	.bound hr {
+		display: none;
+	}
+
+	.bound a {
+		padding-right: 15px;
+	}
+
+	.arrival-time {
+		text-align: left;
+	}
+
+	.duration {
+		text-align: left;
+		margin: 15px 0px 0px 7px;
+	}
+
+	.departure-time {
+		text-align: left;
+	}
+
+	.bound {
+		margin: 0px 0px 0px 0px;
+		background: #ddd;
+		min-height: 34px;
+		padding: 6px 0px 0px 8px;
+	}
+
+	#tab1.first-content.resp-tab-content {
+		padding: 10px 10px 12px 10px;
+	}
+
+	.total-price {
+		padding: 15px 12px 20px 12px;
+		background: #f5f5f5;
+		border-left: none;
+		min-height: inherit;
+		margin: 15px 0px 0px 0px;
+	}
+
+	.detail-flight.right-txt {
+		text-align: left;
+	}
+
+	.modal-box .modal-dialog {
+		width: 95%;
+	}
+
+	.flight-total-price p {
+		text-align: center;
+	}
+
+	.flight-total-price .avg {
+		display: block;
+		text-align: center;
+		padding: 10px 0px 0px 0px;
+	}
+
+	.flight-total-price .book-btn {
+		margin: 15px auto;
+		float: none;
+		display: table;
+	}
+
+	.flight-functional-icons {
+		display: block;
+		float: none;
+		margin: 21px auto 0;
+		display: table;
+	}
+
+	.full-row h5 {
+		width: 100%;
+	}
+
+	.full-row {
+		padding: 6px 10px 12px 10px;
+		border-bottom: 1px solid #d5d4d4;
+		text-align: center;
+	}
+
+	.other-features ul li {
+		width: 100%;
+		padding-bottom: 3px;
+		padding-top: 3px;
+	}
+
+	.other-features {
+		margin: 6px 0px 0px 0px;
+		padding: 0 12px 0 16px;
+	}
+
+	#child-parentHorizontalTab .resp-tab-active {
+		padding: 12px 14px 14px 14px !important;
+	}
+
+	.summary-model {
+		margin: 0px 0px 4px 0px;
+		padding: 0px 15px 0px 0px;
+	}
+
+	.layover2 {
+		margin: 7px 0px 3px 15px;
+	}
+
+	.modal-total-trip {
+		margin: 7px 0px 0px 15px;
+	}
+}
+/*Fare Details table*/
+.fare-details .table > tbody > tr> td {
+	text-align: right;
+}
+.fare-details .table > tbody > tr > th {
+	text-align: right;
+}
+.fare-details .table > thead tr th{
+	text-align: right;
+}
+/*End of Fare Details table*/
+
+li.resp-tab-item img {
+	text-align: left !important;
+	top: -2px;
+	position: relative;
+	padding: 0 6px 0 0;
+}

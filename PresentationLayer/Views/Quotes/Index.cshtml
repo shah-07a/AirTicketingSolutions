@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+    <style>
+        #outer-loader {
+            position: fixed;
+            z-index: 99999;
+            height: 100%;
+            width: 100%;
+            background: rgba(0,0,0,0.9);
+            transition: 1s 0.4s;
+        }
+
+        #loader {
+            border: 12px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 12px solid #7ab421;
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        @@keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .center {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .container {
+            max-width: 1170px;
+            margin: 0 auto;
+        }
+
+            .container img {
+                float: left;
+            }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js?version=202101220623"></script>
+   
+
+</head>
+<body>
+    <div id="outer-loader"><div id="loader" class="center"></div></div>
+    <div id="include_header"><h3>Header Section</h3></div>
+    <div id="include_footer"><h3>Footer Section</h3></div>
+
+    <script>
+
+        $(document).ready(function () {
+            $(function () {
+             //===   $("#include_login-bar").load("http://qa.nanojot.com/services/SearchWidget-v2/search/vertical/login-bar.html");
+            });
+            $(function () {
+                //=== $("#include_header").load("http://design.nanojot.com/manninternationaltravel/header/index.html");
+            });
+            $(function () {
+             //===   $("#includedContent").load("http://qa.nanojot.com/services/SearchWidget-v2/search/vertical/widget.html");
+            });
+            $(function () {
+                //===  $("#include_footer").load("http://design.nanojot.com/manninternationaltravel/footer/index.html");
+            });
+        });
+    </script>
+    <script>
+        document.onreadystatechange = function () {
+            var state = document.readyState
+            if (state == 'interactive') {
+                //== document.getElementsByTagName('body').style.visibility="hidden";
+            } else if (state == 'complete') {
+                setTimeout(function () {
+                    //document.getElementById('interactive');
+                    document.getElementById('outer-loader').style.visibility = "hidden";
+                    //== document.getElementsByTagName('body').style.visibility="visible";
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

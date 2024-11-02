@@ -1,0 +1,1444 @@
+﻿@model Models.Sabre.JsonModels.FilteredResponse.FilteredSearchResponse
+@using Models.Sabre.JsonModels.FilteredResponse
+
+@{
+    ViewBag.Title = "DisplayQuotes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string filtered_search_response = string.Empty;
+    string stopfilters = string.Empty;
+    string preferredAirlines = string.Empty;
+    string distinctAirlines = string.Empty;
+    if (ViewBag.ResponseResult != null)
+    {
+        filtered_search_response = (string)ViewBag.ResponseResult;
+    }
+    if (ViewBag.StopFilters != null)
+    {
+        stopfilters = (string)ViewBag.StopFilters;
+    }
+    if (ViewBag.PreferredAirlines != null)
+    {
+        preferredAirlines = (string)ViewBag.PreferredAirlines;
+    }
+    if (ViewBag.DistinctAirlines != null)
+    {
+        distinctAirlines = (string)ViewBag.DistinctAirlines;
+    }
+}
+ <link href="~/Content/Internal-Widget/css/search-widget.css" rel="stylesheet" /> 
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="search-widget-section">
+            <div>
+                <div class="">
+                    <div class="search-outer">
+                        <!-- Start Search -->
+                        <ul class="search_tab internal-link">
+                            <li style="display: block;" id='li-airWidget'><a href="#airWidget">Search</a></li>
+                            <li id=''><a href="#Filter">Filter</a></li>
+                            <li id=''><a href="#stops-tab">Stops</a></li>
+
+                            <!-- <li id='li-hotelWidget'><a href="#hotelWidget">Hotel</a></li>
+                            <li id='li-carWidget'><a href="#carWidget">Car</a></li>-->
+                        </ul>
+
+                        <div class="search_widget_main">
+                            <!-- Start Air Section -->
+                            <div class="search_widget main-internal-widget" id="airWidget">
+
+                                <div class="search_widget_head">
+                                    <!-- <h2 id="searchwidget-title" class="search_widget_title"><i class="fa fa-plane"></i> Flights</h2> -->
+                                    <!-- <h2 class="search_widget_title"></h2> -->
+                                </div>
+                                <div class="tabs-section internal-widget">
+
+
+                                    <div class="tabs">
+                                        <input type="hidden" id="selectedtype" value="@ViewData["SearchType"]" />
+                                        <input class="input radio triptype" name="tabs" data-val="R" type="radio" id="tab-1" checked="checked" />
+                                        <label class="label r-tab" data-val="R" for="tab-1">Return</label>
+
+
+                                        <div class="panel">
+                                            <div class="row">
+                                                <form id="frm-roundtrip" action="~/Quotes/GetQuotes" method="post">
+                                                    <div class="col-xs-12 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-placeholder"></span>
+                                                            @Html.TextBoxFor(model => model.Departure, new { @class = "form-control clearable cityselect", required = "required", id = "RBdep1", placeholder = "From", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.Departure, "", new { @class = "text-danger" })
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xs-12 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-placeholder"></span>
+                                                            @Html.TextBoxFor(model => model.Destination, new { @class = "form-control clearable cityselect", required = "required", id = "RBarr1", placeholder = "To", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-calendar"></span>
+                                                            <span id="two-inputs">@Html.TextBoxFor(model => model.DepartureDate, new { @class = "form-control date-range200", autocomplete = "off", placeholder = "Departure Date", required = "required", id = "RDepDt" })</span>
+                                                            @Html.ValidationMessageFor(model => model.DepartureDate, "", new { @class = "text-danger" })
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-xs-6 one_way no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-calendar"></span>
+                                                            <span id="two-inputs2">@Html.TextBoxFor(model => model.ReturnDate, new { @class = "date-range201 form-control", autocomplete = "off", placeholder = "Return Date", required = "required", id = "ArrDt" })</span>
+                                                            @Html.ValidationMessageFor(model => model.ReturnDate, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-paper-plane"></span>
+                                                            <label for="Airline">Airline:</label>
+                                                            @Html.TextBoxFor(model => model.AirlineText, new { @class = "form-control", id = "AirlineText" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-price-tag"></span>
+                                                            <label for="FareType">Cabin</label>
+                                                            @Html.DropDownListFor(model => model.FareType, new List<SelectListItem> {
+                                                            new SelectListItem{ Text="All", Value = "All" },
+                                                            new SelectListItem{ Text="Economy", Value = "Y" },
+                                                            new SelectListItem{ Text="Premium Economy", Value = "S" },
+                                                            new SelectListItem{ Text="First", Value = "F" },
+                                                            new SelectListItem{ Text="Premium First", Value = "P" },
+                                                            new SelectListItem{ Text="Business", Value = "C" },
+                                                            }, new { @class = "form-control", id = "RFareType" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="adults">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-man"></span>
+
+
+                                                            <label for="numadults">Adults</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon subAdults"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                @Html.TextBoxFor(model => model.Adults, new { @class = "form-control T-center noOfAdults", id = "noOfAdults", value = "1" })
+                                                                <!--<input type="text" name="Adults" class="form-control T-center noOfAdults" id="noOfAdults" value="1"> -->
+                                                                <div class="input-group-addon addAdults"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="childs">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-boy-smiling"></span>
+                                                            <label for="numchildren">Children </label>
+                                                            <div data-tip="Age should be between 3-12 years">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon subChildrens"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                    <!-- <input type="text" name="Children" class="form-control T-center noOfChildrens" id="noOfChildrens" value="0"> -->
+                                                                    @Html.TextBoxFor(model => model.Children, new { @class = "form-control T-center noOfChildrens", id = "noOfChildrens", value = "0" })
+                                                                    <div class="input-group-addon addChildrens"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="infants">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-baby"></span>
+                                                            <label for="numinfants">Infants <!--<i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i>--></label>
+                                                            <div data-tip="Age should be between 0-24 months">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon subInfants"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                    <!--<input type="text" name="Infants" class="form-control T-center noOfInfants" id="noOfInfants" value="0">-->
+                                                                    @Html.TextBoxFor(model => model.Infants, new { @class = "form-control T-center noOfInfants", id = "noOfInfants", value = "0" })
+                                                                    <div class="input-group-addon addInfants"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-checkbox d-flight">
+                                                            <span class="search__input">
+                                                                @{
+                                                                    if (ViewData["DirectOnly"].ToString() == "ON")
+                                                                    {
+                                                                        <input type="checkbox" name="directOnly" id="directOnly" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="checkbox" name="directOnly" id="directOnly">
+                                                                    }
+                                                                }
+                                                            </span>
+
+                                                            <label for="directOnly">Direct Flights</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+                                                    <div class="search_widget_footer">
+                                                        <button class="btn btn-primary btn-block btn-lg" type="submit" id="btnSearch">Search Now</button>
+                                                    </div>
+                                                    <!-- Hidden Fields By Rafiq -->
+                                                    <input type="hidden" id="BookingType" name="BookingType">
+                                                    <input type="hidden" id="SearchType" name="SearchType">
+                                                    <input type="hidden" id="DirectOnly" name="DirectOnly">
+                                                    <input type="hidden" id="DomainName" name="DomainName">
+                                                    <input type="hidden" id="DefaultCompanyId" name="DefaultCompanyId">
+                                                    <input type="hidden" id="CompanyTypeId" name="CompanyTypeId">
+                                                    <input type="hidden" id="AuthToken" name="AuthToken">
+                                                    <input type="hidden" id="ReferrerUrl" name="ReferrerUrl">
+                                                    <input type="hidden" id="ClientRequestId" name="ClientRequestId">
+                                                    <input type="hidden" id="RequestingClientInfo" name="RequestingClientInfo">
+                                                    <input type="hidden" id="Airline" name="Airline" value="@ViewData["AirlineVal"]">
+                                                    <!-- End Hidden Fields By Rafiq -->
+
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <input class="input triptype" name="tabs" type="radio" data-val="O" id="tab-2" />
+                                        <label class="label r-tab" data-val="O" for="tab-2">One Way</label>
+                                        <div class="panel">
+                                            <div class="row">
+                                                <form id="frm-oneway" action="~/Quotes/GetQuotes" method="post">
+                                                    <div class="col-xs-12 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-placeholder"></span>
+                                                            <!--<input type="text" required id="OBdep1" class="form-control clearable cityselect" placeholder="From" name="Departure" autocomplete="off"> -->
+                                                            @Html.TextBoxFor(model => model.Departure, new { @class = "form-control clearable cityselect", required = "required", id = "OBdep1", placeholder = "From", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.Departure, "", new { @class = "text-danger" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xs-12 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-placeholder"></span>
+                                                            <!--input type="text" required id="OBarr1" class="form-control clearable cityselect" placeholder="To" name="Destination" autocomplete="off"> -->
+                                                            @Html.TextBoxFor(model => model.Destination, new { @class = "form-control clearable cityselect", required = "required", id = "OBarr1", placeholder = "To", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xs-12 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-calendar"></span>
+                                                            <!-- <label for="DepDt"><i class="fa fa-calendar"></i> Departure Date</label>-->
+                                                            <!--<input type="text" required class="date-range13-ow1 form-control" autocomplete="off" value="" placeholder="Departure Date" name="ODepartureDate" id="ODepDt">-->
+                                                            @Html.TextBoxFor(model => model.DepartureDate, new { @class = "date-range13-ow1 form-control", autocomplete = "off", placeholder = "Departure Date", required = "required", id = "ODepDt" })
+                                                            @Html.ValidationMessageFor(model => model.DepartureDate, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-paper-plane"></span>
+                                                            <label for="Airline">Airline:</label>
+
+                                                            @Html.TextBoxFor(model => model.OAirlineText, new { @class = "form-control", id = "OAirlineText" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-price-tag"></span>
+                                                            <label for="FareType">Cabin</label>
+                                                            @Html.DropDownListFor(model => model.FareType, new List<SelectListItem> {
+                                                               new SelectListItem{ Text="All", Value = "All" },
+                                                               new SelectListItem{ Text="Economy", Value = "Y" },
+                                                               new SelectListItem{ Text="Premium Economy", Value = "S" },
+                                                               new SelectListItem{ Text="First", Value = "F" },
+                                                               new SelectListItem{ Text="Premium First", Value = "P" },
+                                                               new SelectListItem{ Text="Business", Value = "C" },
+                                                               }, new { @class = "form-control", id = "OFareType" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="adultsO">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-man"></span>
+                                                            <label for="numadults">Adults</label>
+
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon subAdults"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                <!--<input type="text" name="Adults" class="form-control T-center noOfAdults" id="noOfAdults" value="1"> -->
+                                                                @Html.TextBoxFor(model => model.Adults, new { @class = "form-control T-center noOfAdults", id = "noOfAdults", value = "1" })
+                                                                <div class="input-group-addon addAdults"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="childsO">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-boy-smiling"></span>
+                                                            <label for="numchildren"> Children <!--<i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age from 2 to 11 years"></i>--></label>
+                                                            <div data-tip="Age should be between 3-12 years">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon subChildrens"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                    <!-- <input type="text" name="Children" class="form-control T-center noOfChildrens" id="noOfChildrens" value="0"> -->
+                                                                    @Html.TextBoxFor(model => model.Children, new { @class = "form-control T-center noOfChildrens", id = "noOfChildrens", value = "0" })
+                                                                    <div class="input-group-addon addChildrens"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="infantsO">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-baby"></span>
+                                                            <label for="numinfants">Infants <!--<i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i>--></label>
+                                                            <div data-tip="Age should be between 0-24 months">
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon subInfants"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                    <!-- <input type="text" name="Infants" class="form-control T-center noOfInfants" id="noOfInfants" value="0"> -->
+                                                                    @Html.TextBoxFor(model => model.Infants, new { @class = "form-control T-center noOfInfants", id = "noOfInfants", value = "0" })
+                                                                    <div class="input-group-addon addInfants"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xs-6 no--padding">
+
+
+                                                        <div class="search__group-checkbox d-flight">
+                                                            <span class="search__input">
+                                                                @{
+                                                                    if (ViewData["DirectOnly"].ToString() == "ON")
+                                                                    {
+                                                                        <input type="checkbox" name="directOnly" id="OdirectOnly" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="checkbox" name="directOnly" id="OdirectOnly">
+                                                                    }
+                                                                }
+                                                                <!--<input type="checkbox" name="DirectFlights" id="OdirectOnly">-->
+                                                            </span>
+                                                            <label for="OdirectOnly">Direct Flights</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+
+
+                                                    <div class="search_widget_footer">
+                                                        <button class="btn btn-primary btn-block btn-lg" id="ObtnSearch" type="submit">Search Now</button>
+                                                    </div>
+                                                    <!-- Hidden Fields By Rafiq -->
+                                                    <input type="hidden" id="OBookingType" name="BookingType">
+                                                    <input type="hidden" id="OSearchType" name="SearchType">
+                                                    <input type="hidden" id="ODirectOnly" name="DirectOnly">
+                                                    <input type="hidden" id="ODomainName" name="DomainName">
+                                                    <input type="hidden" id="ODefaultCompanyId" name="DefaultCompanyId">
+                                                    <input type="hidden" id="OCompanyTypeId" name="CompanyTypeId">
+                                                    <input type="hidden" id="OAuthToken" name="AuthToken">
+                                                    <input type="hidden" id="OReferrerUrl" name="ReferrerUrl">
+                                                    <input type="hidden" id="OClientRequestId" name="ClientRequestId">
+                                                    <input type="hidden" id="ORequestingClientInfo" name="RequestingClientInfo">
+                                                    <input type="hidden" id="OAirline" name="Airline" value="@ViewData["AirlineVal"]">
+                                                    <!-- End Hidden Fields By Rafiq -->
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <input class="input triptype" name="tabs" type="radio" data-val="M" id="tab-3" />
+                                        <label class="label r-tab" data-val="M" for="tab-3">Multicity</label>
+                                        <div class="panel">
+
+                                            <div class="row">
+                                                <form id="frm-multicity" action="~/Quotes/GetQuotes" method="post">
+
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-placeholder"></span>
+                                                            <!--<label for="MBdep1"><i class="fa fa-map-marker"></i> From</label>-->
+                                                            <!--<input type="text" required id="MBdep1" class="form-control clearable cityselect" placeholder="From" name="MDeparture" autocomplete="off"> -->
+                                                            @Html.TextBoxFor(model => model.Departure, new { @class = "form-control clearable cityselect", required = "required", id = "MBdep1", placeholder = "From", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.Departure, "", new { @class = "text-danger" })
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-placeholder"></span>
+                                                            <!--<label for="MBarr1"><i class="fa fa-map-marker"></i> To</label>-->
+                                                            <!--<input type="text" required id="MBarr1" class="form-control clearable cityselect" placeholder="To" name="MDestination" autocomplete="off"> -->
+                                                            @Html.TextBoxFor(model => model.Destination, new { @class = "form-control clearable cityselect", required = "required", id = "MBarr1", placeholder = "To", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xs-12 no--padding">
+                                                        <div class="search__group">
+                                                            <span class="search__icon icon-calendar"></span>
+                                                            <!-- <label for="DepDt1"><i class="fa fa-calendar"></i> Departure Date</label>-->
+                                                            <!--<input type="text" required class="form-control date-range13-m1" autocomplete="off" value="" placeholder="Departure Date" name="MDepartureDate" id="DepDt1">-->
+                                                            @Html.TextBoxFor(model => model.DepartureDate, new { @class = "form-control date-range13-m1", required = "required", id = "DepDt1", placeholder = "Departure Date", autocomplete = "off" })
+                                                            @Html.ValidationMessageFor(model => model.DepartureDate, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="multicity_options" id="block-S">
+                                                        <div class="multiOne">
+                                                            <hr>
+                                                            <div class="col-xs-6 no--padding">
+                                                                <div class="search__group">
+                                                                    <span class="search__icon icon-placeholder"></span>
+                                                                    <!--  <label for="MBdep2"><i class="fa fa-map-marker"></i> From</label>-->
+                                                                    <!--<input type="text" required id="MBdep2" class="form-control clearable cityselect" placeholder="From" name="MDeparture1" autocomplete="off"> -->
+                                                                    @Html.TextBoxFor(model => model.Departure1, new { @class = "form-control clearable cityselect", required = "required", id = "MBdep2", placeholder = "From", autocomplete = "off" })
+                                                                    @Html.ValidationMessageFor(model => model.Departure1, "", new { @class = "text-danger" })
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-xs-6 no--padding">
+                                                                <div class="search__group">
+                                                                    <span class="search__icon icon-placeholder"></span>
+                                                                    <!-- <label for="MBarr2"><i class="fa fa-map-marker"></i> To</label>-->
+                                                                    <!--<input type="text" required id="MBarr2" class="form-control clearable cityselect" placeholder="To" name="MDestination1" autocomplete="off">-->
+                                                                    @Html.TextBoxFor(model => model.Destination1, new { @class = "form-control clearable cityselect", required = "required", id = "MBarr2", placeholder = "To", autocomplete = "off" })
+                                                                    @Html.ValidationMessageFor(model => model.Destination1, "", new { @class = "text-danger" })
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="col-xs-12 no--padding">
+                                                                <div class="search__group">
+                                                                    <span class="search__icon icon-calendar"></span>
+                                                                    <!--<label for="DepDt2"><i class="fa fa-calendar"></i> Departure Date</label>-->
+                                                                    <!--<input type="text" required="" class="form-control date-range13-m2" autocomplete="off" placeholder="Departure Date" value="" name="MDepartureDate1" id="DepDt2"> -->
+                                                                    @Html.TextBoxFor(model => model.DepartureDate1, new { @class = "form-control date-range13-m2", required = "required", id = "DepDt2", placeholder = "Departure Date", autocomplete = "off" })
+                                                                    @Html.ValidationMessageFor(model => model.DepartureDate1, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+
+                                                        <div class="multiTwo">
+                                                            <hr>
+                                                            <div class="col-xs-6 no--padding">
+                                                                <div class="search__group">
+                                                                    <span class="search__icon icon-placeholder"></span>
+                                                                    <!-- <label for="MBdep3"><i class="fa fa-map-marker"></i> From</label>-->
+                                                                    <!--<input type="text" required id="MBdep3" class="form-control clearable cityselect effect-20" placeholder="From" name="MDeparture2" autocomplete="off">-->
+                                                                    @Html.TextBoxFor(model => model.Departure2, new { @class = "form-control clearable cityselect effect-20", required = "required", id = "MBdep3", placeholder = "From", autocomplete = "off" })
+                                                                    @Html.ValidationMessageFor(model => model.Departure2, "", new { @class = "text-danger" })
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-xs-6 no--padding">
+                                                                <div class="search__group">
+                                                                    <span class="search__icon icon-placeholder"></span>
+                                                                    <!--<label for="MBarr3"><i class="fa fa-map-marker"></i> To</label>-->
+                                                                    <!--<input type="text" required id="MBarr3" class="form-control clearable cityselect" placeholder="To" name="MDestination2" autocomplete="off">-->
+                                                                    @Html.TextBoxFor(model => model.Destination2, new { @class = "form-control clearable cityselect", required = "required", id = "MBarr3", placeholder = "To", autocomplete = "off" })
+                                                                    @Html.ValidationMessageFor(model => model.Departure2, "", new { @class = "text-danger" })
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-xs-12 no--padding">
+                                                                <div class="search__group">
+                                                                    <span class="search__icon icon-calendar"></span>
+                                                                    <!--<label for="DepDt3"><i class="fa fa-calendar"></i> Departure Date</label>-->
+                                                                    <!---<input type="text" required class="form-control date-range13-m3" autocomplete="off" value="" placeholder="Departure date" name="MDepartureDate2" id="DepDt3">-->
+                                                                    @Html.TextBoxFor(model => model.DepartureDate2, new { @class = "form-control date-range13-m3", required = "required", id = "DepDt3", placeholder = "Departure Date", autocomplete = "off" })
+                                                                    @Html.ValidationMessageFor(model => model.DepartureDate2, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+                                                        <div class="col-sm-12 multiClass">
+
+                                                            <div class="col-xs-6">
+                                                                <a class="addRoom multiButtonAdd"><i class="fa fa-plus-square"></i> Add Multicity</a>
+                                                            </div>
+                                                            <div class="col-xs-6 text-right">
+                                                                <a class="deleteRoom multiButtonDel"><i class="fa fa-minus-square"></i> Delete Multicity</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-paper-plane"></span>
+                                                            <label for="Airline">Airline:</label>
+                                                            @Html.TextBoxFor(model => model.MAirlineText, new { @class = "form-control", id = "MAirlineText" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-price-tag"></span>
+                                                            <label for="FareType">Cabin</label>
+                                                            @Html.DropDownListFor(model => model.FareType, new List<SelectListItem> {
+                                                              new SelectListItem{ Text="All", Value = "All" },
+                                                              new SelectListItem{ Text="Economy", Value = "Y" },
+                                                              new SelectListItem{ Text="Premium Economy", Value = "S" },
+                                                              new SelectListItem{ Text="First", Value = "F" },
+                                                              new SelectListItem{ Text="Premium First", Value = "P" },
+                                                              new SelectListItem{ Text="Business", Value = "C" },
+                                                              }, new { @class = "form-control", id = "MFareType" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="adultsM">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-man"></span>
+                                                            <label for="numadults">Adults</label>
+
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon subAdults"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                @Html.TextBoxFor(model => model.Adults, new { @class = "form-control T-center noOfAdults", id = "noOfAdults", value = "1" })
+                                                                <!--<input type="text" name="MNoOfAdults" class="form-control T-center noOfAdults" id="noOfAdults" value="1"> -->
+                                                                <div class="input-group-addon addAdults"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="childsM">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-boy-smiling"></span>
+                                                            <label for="numchildren">Children <!--<i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age from 2 to 11 years"></i>--></label>
+                                                            <div data-tip="Age should be between 3-12 years">
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon subChildrens"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                    <!--<input type="text" name="MNoOfChildrens" class="form-control T-center noOfChildrens" id="noOfChildrens" value="0">-->
+                                                                    @Html.TextBoxFor(model => model.Children, new { @class = "form-control T-center noOfChildrens", id = "noOfChildrens", value = "0" })
+                                                                    <div class="input-group-addon addChildrens"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 no--padding" id="infantsM">
+                                                        <div class="search__group-select">
+                                                            <span class="search__icon icon-baby"></span>
+                                                            <label for="numinfants">Infants <!--<i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i>--></label>
+                                                            <div data-tip="Age should be between 0-24 months">
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon subInfants"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                                                    <!-- <input type="text" name="MNoOfInfants" class="form-control T-center noOfInfants" id="noOfInfants" value="0"> -->
+                                                                    @Html.TextBoxFor(model => model.Infants, new { @class = "form-control T-center noOfInfants", id = "noOfInfants", value = "0" })
+                                                                    <div class="input-group-addon addInfants"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xs-6 no--padding">
+                                                        <div class="search__group-checkbox d-flight">
+                                                            <span class="search__input">
+                                                                <!--<input type="checkbox" name="MDirectFlights" id="MdirectOnly">-->
+                                                                @{
+                                                                    if (ViewData["DirectOnly"].ToString() == "ON")
+                                                                    {
+                                                                        <input type="checkbox" name="directOnly" id="MdirectOnly" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="checkbox" name="directOnly" id="MdirectOnly">
+                                                                    }
+                                                                }
+                                                            </span>
+                                                            <label for="MdirectOnly">Direct Flights</label>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="clearfix"></div>
+
+
+                                                    <div class="search_widget_footer">
+                                                        <button class="btn btn-primary btn-block btn-lg" id="MbtnSearch" type="submit">Search Now</button>
+                                                    </div>
+                                                    <!-- Hidden Fields By Rafiq -->
+                                                    <input type="hidden" id="MBookingType" name="BookingType">
+                                                    <input type="hidden" id="MSearchType" name="SearchType">
+                                                    <input type="hidden" id="MDirectOnly" name="DirectOnly">
+                                                    <input type="hidden" id="MDomainName" name="DomainName">
+                                                    <input type="hidden" id="MDefaultCompanyId" name="DefaultCompanyId">
+                                                    <input type="hidden" id="MCompanyTypeId" name="CompanyTypeId">
+                                                    <input type="hidden" id="MAuthToken" name="AuthToken">
+                                                    <input type="hidden" id="MReferrerUrl" name="ReferrerUrl">
+                                                    <input type="hidden" id="MClientRequestId" name="ClientRequestId">
+                                                    <input type="hidden" id="MRequestingClientInfo" name="RequestingClientInfo">
+                                                    <input type="hidden" id="MAirline" name="Airline" value="@ViewData["AirlineVal"]">
+                                                    <!-- End Hidden Fields By Rafiq -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <!-- End Air Section -->
+                            <!-- Start Hotel Section -->
+                            <div class="search_widget" id="hotelWidget">
+                                <form method="post" id="formhotels">
+                                    <div class="search_widget_head">
+                                        <!--<h2 class="search_widget_title"><i class="fa fa-hospital-o"></i> Search Hotels</h2>-->
+                                        <h2 class="search_widget_title"></h2>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 ">
+                                            <label for="hotelDestination"><i class="fa fa-map-marker"></i> Destination</label>
+                                            <input type="text" required id="hotelDestination" class="form-control cityselect effect-20" placeholder="" name="hotelDestination" autocomplete="off">
+
+
+
+
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label for="checkIn"><i class="fa fa-calendar"></i> Check In</label>
+                                            <span id="two-inputs-hotel"> <input type="text" required class="form-control date-range202" autocomplete="off" value="" name="checkIn" id="checkIn"></span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label for="checkOut"><i class="fa fa-calendar"></i> Check Out</label>
+                                            <span id="two-inputs-hotel2"><input type="text" required class="form-control date-range203" autocomplete="off" value="" name="checkOut" id="checkOut"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="room1">
+                                        <h2 class="search_widget_subTitle"><i class="fa fa-long-arrow-down"></i> Room 1</h2>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label for="r1adults"><i class="fa fa-male"></i> Adults</label>
+                                                <div class="select_option">
+                                                    <select name="r1adults" id="nbadults" class="form-control">
+                                                        <option value="1" selected="selected">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Children"><i class="fa fa-child"></i> Children <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age from 2 to 11 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Children" id="nbchilds" class="form-control children">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Infants"><i class="fa fa-smile-o"></i> Infants <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Infants" id="r1Infants" class="form-control infants">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="room2">
+                                        <h2 class="search_widget_subTitle"><i class="fa fa-long-arrow-down"></i> Room 2</h2>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label for="r2adults"><i class="fa fa-male"></i> Adults</label>
+                                                <div class="select_option">
+                                                    <select name="r1adults" id="nbadults" class="form-control">
+                                                        <option value="1" selected="selected">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Children"><i class="fa fa-child"></i> Children <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age from 2 to 11 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Children" id="nbchilds" class="form-control children">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Infants"><i class="fa fa-smile-o"></i> Infants <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Infants" id="r1Infants" class="form-control infants">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+
+                                        </div>
+                                    </div>
+
+                                    <div id="room3">
+                                        <h2 class="search_widget_subTitle"><i class="fa fa-long-arrow-down"></i> Room 3</h2>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label for="r3adults"><i class="fa fa-male"></i> Adults</label>
+                                                <div class="select_option">
+                                                    <select name="r1adults" id="nbadults" class="form-control">
+                                                        <option value="1" selected="selected">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Children"><i class="fa fa-child"></i> Children <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age from 2 to 11 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Children" id="nbchilds" class="form-control children">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Infants"><i class="fa fa-smile-o"></i> Infants <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Infants" id="r1Infants" class="form-control infants">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="room4">
+                                        <h2 class="search_widget_subTitle"><i class="fa fa-long-arrow-down"></i> Room 4</h2>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label for="r4adults"><i class="fa fa-male"></i> Adults</label>
+                                                <div class="select_option">
+                                                    <select name="r1adults" id="nbadults" class="form-control">
+                                                        <option value="1" selected="selected">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Children"><i class="fa fa-child"></i> Children <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age from 2 to 11 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Children" id="nbchilds" class="form-control children">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="r1Infants"><i class="fa fa-smile-o"></i> Infants <i class="fa fa-info-circle tooltip-info" data-toggle="tooltip" data-original-title="Child age Below 2 years"></i></label>
+                                                <div class="select_option">
+                                                    <select name="r1Infants" id="r1Infants" class="form-control infants">
+                                                        <option value="0" selected="selected">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <a href="javascript:void(0)" class="addRoom room1Opt"><i class="fa fa-plus-square"></i> Add Room</a>
+                                        </div>
+                                        <div class="col-xs-6 text-right">
+                                            <a href="javascript:void(0)" class="deleteRoom"><i class="fa fa-minus-square"></i> Delete Room</a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="search_widget_footer">
+                                        <button class="btn btn-primary btn-block btn-lg" id="btnSearchHotel" type="submit">Search Now</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <!-- End Hotel Section -->
+                            <!-- Start Car Section -->
+                            <div class="search_widget" id="carWidget">
+                                <form method="post" id="formcars">
+                                    <div class="search_widget_head">
+                                        <!--<h2 class="search_widget_title"><i class="fa fa-car"></i> Search Cars</h2>-->
+                                        <h2 class="search_widget_title"></h2>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-xs-12 ">
+                                            <label for="pickUp"><i class="fa fa-map-marker"></i> Pick-up City</label>
+                                            <input type="text" required id="pickUp" class="form-control effect-20 cityselect" placeholder="" name="pickUpCity" autocomplete="off">
+                                            <span class="focus-border">
+                                                <i></i>
+                                            </span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 Drop-off-Location">
+                                            <label for="dropOff"><i class="fa fa-map-marker"></i> Drop-off City</label>
+                                            <input type="text" required id="dropOff" class="form-control cityselect" placeholder="Enter drop off city/country code" name="dropOffCity" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <a href="javascript:void(0)" class="PickDropLocation"><span class="different-location"><i class="fa fa-plus-square"></i> Need a different drop-off location?</span><span class="same-location"><i class="fa fa-minus-square"></i> Drop off at same location?</span></a>
+
+                                    <div class="row">
+                                        <hr>
+
+                                        <div class="col-xs-6">
+                                            <label for="Pick-upDate"><i class="fa fa-calendar"></i> Pick-up Date</label>
+                                            <span id="two-inputs-car"><input type="text" required class="form-control date-range204" autocomplete="off" value="" name="Pick-upDate" id="Pick-upDate"></span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label for="Pick-upTime"><i class="fa fa-clock-o"></i> Pick-up Time</label>
+                                            <div class="select_option">
+                                                <select name="Pick-upTime" id="Pick-upTime" class="form-control">
+                                                    <option value="00:00">00:00</option>
+                                                    <option value="00:30">00:30</option>
+                                                    <option value="01:00">01:00</option>
+                                                    <option value="01:30">01:30</option>
+                                                    <option value="02:00">02:00</option>
+                                                    <option value="02:30">02:30</option>
+                                                    <option value="03:00">03:00</option>
+                                                    <option value="03:30">03:30</option>
+                                                    <option value="04:00">04:00</option>
+                                                    <option value="04:30">04:30</option>
+                                                    <option value="05:00">05:00</option>
+                                                    <option value="05:30">05:30</option>
+                                                    <option value="06:00">06:00</option>
+                                                    <option value="06:30">06:30</option>
+                                                    <option value="07:00">07:00</option>
+                                                    <option value="07:30">07:30</option>
+                                                    <option value="08:00">08:00</option>
+                                                    <option value="08:30">08:30</option>
+                                                    <option value="09:00">09:00</option>
+                                                    <option value="09:30">09:30</option>
+                                                    <option selected="" value="10:00">10:00</option>
+                                                    <option value="10:30">10:30</option>
+                                                    <option value="11:00">11:00</option>
+                                                    <option value="11:30">11:30</option>
+                                                    <option value="12:00">12:00</option>
+                                                    <option value="12:30">12:30</option>
+                                                    <option value="13:00">13:00</option>
+                                                    <option value="13:30">13:30</option>
+                                                    <option value="14:00">14:00</option>
+                                                    <option value="14:30">14:30</option>
+                                                    <option value="15:00">15:00</option>
+                                                    <option value="15:30">15:30</option>
+                                                    <option value="16:00">16:00</option>
+                                                    <option value="16:30">16:30</option>
+                                                    <option value="17:00">17:00</option>
+                                                    <option value="17:30">17:30</option>
+                                                    <option value="18:00">18:00</option>
+                                                    <option value="18:30">18:30</option>
+                                                    <option value="19:00">19:00</option>
+                                                    <option value="19:30">19:30</option>
+                                                    <option value="20:00">20:00</option>
+                                                    <option value="20:30">20:30</option>
+                                                    <option value="21:00">21:00</option>
+                                                    <option value="21:30">21:30</option>
+                                                    <option value="22:00">22:00</option>
+                                                    <option value="22:30">22:30</option>
+                                                    <option value="23:00">23:00</option>
+                                                    <option value="23:30">23:30</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label for="Drop-OffDate"><i class="fa fa-calendar"></i> Pick-up Date</label>
+                                            <span id="two-inputs-car2"><input type="text" required class="form-control date-range205" autocomplete="off" value="" name="Drop-OffDate" id="Drop-OffDate"></span>
+                                        </div>
+
+                                        <div class="col-xs-6">
+                                            <label for="Drop-offTime"><i class="fa fa-clock-o"></i> Pick-up Time</label>
+                                            <div class="select_option">
+                                                <select name="Drop-offTime" id="Drop-offTime" class="form-control">
+                                                    <option value="00:00">00:00</option>
+                                                    <option value="00:30">00:30</option>
+                                                    <option value="01:00">01:00</option>
+                                                    <option value="01:30">01:30</option>
+                                                    <option value="02:00">02:00</option>
+                                                    <option value="02:30">02:30</option>
+                                                    <option value="03:00">03:00</option>
+                                                    <option value="03:30">03:30</option>
+                                                    <option value="04:00">04:00</option>
+                                                    <option value="04:30">04:30</option>
+                                                    <option value="05:00">05:00</option>
+                                                    <option value="05:30">05:30</option>
+                                                    <option value="06:00">06:00</option>
+                                                    <option value="06:30">06:30</option>
+                                                    <option value="07:00">07:00</option>
+                                                    <option value="07:30">07:30</option>
+                                                    <option value="08:00">08:00</option>
+                                                    <option value="08:30">08:30</option>
+                                                    <option value="09:00">09:00</option>
+                                                    <option value="09:30">09:30</option>
+                                                    <option selected="" value="10:00">10:00</option>
+                                                    <option value="10:30">10:30</option>
+                                                    <option value="11:00">11:00</option>
+                                                    <option value="11:30">11:30</option>
+                                                    <option value="12:00">12:00</option>
+                                                    <option value="12:30">12:30</option>
+                                                    <option value="13:00">13:00</option>
+                                                    <option value="13:30">13:30</option>
+                                                    <option value="14:00">14:00</option>
+                                                    <option value="14:30">14:30</option>
+                                                    <option value="15:00">15:00</option>
+                                                    <option value="15:30">15:30</option>
+                                                    <option value="16:00">16:00</option>
+                                                    <option value="16:30">16:30</option>
+                                                    <option value="17:00">17:00</option>
+                                                    <option value="17:30">17:30</option>
+                                                    <option value="18:00">18:00</option>
+                                                    <option value="18:30">18:30</option>
+                                                    <option value="19:00">19:00</option>
+                                                    <option value="19:30">19:30</option>
+                                                    <option value="20:00">20:00</option>
+                                                    <option value="20:30">20:30</option>
+                                                    <option value="21:00">21:00</option>
+                                                    <option value="21:30">21:30</option>
+                                                    <option value="22:00">22:00</option>
+                                                    <option value="22:30">22:30</option>
+                                                    <option value="23:00">23:00</option>
+                                                    <option value="23:30">23:30</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row CarOption">
+                                        <div class="col-xs-6">
+                                            <label for="CarCompany"><i class="fa fa-taxi"></i> Car Company</label>
+                                            <div class="select_option">
+                                                <select name="CarCompany" id="CarCompany" class="form-control">
+                                                    <option value="Default">All car rental</option>
+                                                    <option value="AC"> Ace Rent a Car </option>
+                                                    <option value="AO"> Aco Rent a Car </option>
+                                                    <option value="AD"> Advantage </option>
+                                                    <option value="AG"> Aga Rent a Car </option>
+                                                    <option value="AL"> Alamo Rent a Car </option>
+                                                    <option value="AT"> Atesa Car Rental </option>
+                                                    <option value="ZU"> Auto Europe </option>
+                                                    <option value="AR"> Autorent </option>
+                                                    <option value="ZI"> Avis Rent a Car </option>
+                                                    <option value="BV"> Bidvest Car Rental </option>
+                                                    <option value="BW"> Blueway Car Rental </option>
+                                                    <option value="ZD"> Budget Rent a Car </option>
+                                                    <option value="CT"> Centauro </option>
+                                                    <option value="DS"> Discount Rentals </option>
+                                                    <option value="ZR"> Dollar Rent a Car </option>
+                                                    <option value="DF"> Driving Force </option>
+                                                    <option value="ES"> Easirent </option>
+                                                    <option value="EY"> Economy Rent a Car </option>
+                                                    <option value="ET"> Enterprise Rent a Car </option>
+                                                    <option value="EM"> Euromobil </option>
+                                                    <option value="EP"> Europcar </option>
+                                                    <option value="EX"> Express Rent a Car </option>
+                                                    <option value="EZ"> EZ Rent a Car </option>
+                                                    <option value="FF"> Firefly Car Rental </option>
+                                                    <option value="FR"> First Car </option>
+                                                    <option value="FC"> First Car Rental </option>
+                                                    <option value="FL"> Flightcar </option>
+                                                    <option value="FX"> Fox Rent a Car </option>
+                                                    <option value="GM"> Green Motion </option>
+                                                    <option value="ZE"> Hertz Rent a Car </option>
+                                                    <option value="LL"> Localiza Rent a Car </option>
+                                                    <option value="MX"> Mex Rent a Car </option>
+                                                    <option value="MW"> Midway Rent a Car </option>
+                                                    <option value="MO"> Movida Rent a car </option>
+                                                    <option value="ZL"> National Car Rental </option>
+                                                    <option value="NC"> Nextcar </option>
+                                                    <option value="NU"> NU Car Rentals </option>
+                                                    <option value="ZA"> Payless Car Rental </option>
+                                                    <option value="PR"> Priceless </option>
+                                                    <option value="PC"> Punta Car </option>
+                                                    <option value="RW"> Rent a Wreck </option>
+                                                    <option value="RM"> RentMax Car Rental </option>
+                                                    <option value="RO"> Routes </option>
+                                                    <option value="SC"> Silvercar </option>
+                                                    <option value="SX"> Sixt Auto </option>
+                                                    <option value="SL"> Solmar </option>
+                                                    <option value="ZT"> Thrifty Car Rental </option>
+                                                    <option value="TF"> Tu Florida Rental car </option>
+                                                    <option value="SV"> Usave Auto </option>
+                                                    <option value="WF"> Woodford </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label for="CarType"><i class="fa fa-map-signs"></i> Car Type</label>
+                                            <div class="select_option">
+                                                <select name="CarType" id="CarType" class="form-control">
+                                                    <option value="Default">All Car Sizes</option>
+                                                    <optgroup label="Regular Cars">
+                                                        <option value="EC"> Economy </option>
+                                                        <option value="CC"> Compact </option>
+                                                        <option value="IC"> Midsize </option>
+                                                        <option value="SC"> Standard </option>
+                                                        <option value="FC"> Fullsize </option>
+                                                        <option value="PC"> Premium </option>
+                                                        <option value="LC"> Luxury </option>
+                                                        <option value="MC"> Mini </option>
+                                                    </optgroup>
+                                                    <optgroup label="Others">
+                                                        <option value="MV"> Minivan </option>
+                                                        <option value="SF"> 4 x 4 </option>
+                                                        <option value="ST"> Convertible </option>
+                                                        <option value="APUP"> Any Pick Up </option>
+                                                        <option value="AGRN"> Green </option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="javascript:void(0)" class="car-options"><span class="more-options"><i class="fa fa-plus-square"></i> More Options</span><span class="less-options"><i class="fa fa-minus-square"></i> Less Options</span></a>
+
+
+
+                                    <div class="search_widget_footer">
+                                        <button class="btn btn-primary btn-block btn-lg" id="btnSearchCar" type="submit">Search Now</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- End Car Section -->
+                            <!-- filter panel starts here -->
+                            <div id="Filter" class="search_widget filter-panel tabcontent">
+                                <div class="row">
+                                    <div class="col-xs-12" style="line-height:0;">
+                                        <div class="widget-box refine-box">
+                                            <!--<div class="widget-header">
+                                                <h5 class="widget-title">Refine Your Search</h5>
+                                            </div>-->
+                                            <div class="widget-body">
+                                                <div class="widget-main" style="padding:0px;">
+                                                    <div class="background-blue">
+                                                        <div class="col-md-12   hidden">
+                                                            <h5 class="hidden bolder ">
+                                                                Stops <span href="#flt_nav1" class="pull-right hidden p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav1" class="active collapse in   hidden">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" id="">
+                                                                        Nonstop
+                                                                    </label>
+                                                                    <span class="pull-right">C$1,410.92</span>
+                                                                </div>
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" id="">
+                                                                        1 stop
+                                                                    </label>
+                                                                    <span class="pull-right">C$1,410.92</span>
+                                                                </div>
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" id="">
+                                                                        2 + stop
+                                                                    </label>
+                                                                    <span class="pull-right">C$1,410.92</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 submenu-btn">
+                                                            <br>
+                                                            <h5 class="bolder ">
+                                                                Price Range <span href="#flt_nav3" class="pull-right p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav3" class="active collapse in xxxx">
+                                                                <div class="layout-slider">
+                                                                    <input id="Price-range-slider" type="slider" name="area" value="0;10000" style="display: none;"><span class="jslider jslider_round_plastic"><table><tbody><tr><td><div class="jslider-bg"><i class="l"></i><i class="f"></i><i class="r"></i><i class="v" style="left: 0%; width: 100%;"></i></div><div class="jslider-pointer" style="left: 0%;"></div><div class="jslider-pointer jslider-pointer-to" style="left: 100%;"></div><div class="jslider-label"><span>,00</span></div><div class="jslider-label jslider-label-to"><span>10000,00</span>&nbsp;$</div><div class="jslider-value" style="visibility: visible; left: 0%; margin-left: 0px; right: auto;"><span>,00</span>&nbsp;$</div><div class="jslider-value jslider-value-to" style="visibility: visible; left: 100%; margin-left: 0px; right: auto;"><span>10000,00</span>&nbsp;$</div><div class="jslider-scale"></div></td></tr></tbody></table></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <h5 class="bolder">
+                                                                Outbound Flight Times <span href="#flt_nav2" class="pull-right p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav2" class="active collapse in">
+                                                                <p>Departure Time</p>
+
+                                                                <div class="layout-slider">
+                                                                    <input id="Departure-range-slider" type="slider" name="area" value="0;24" class="selector" style="display: none;"><span class="jslider jslider_round_plastic"><table><tbody><tr><td><div class="jslider-bg"><i class="l"></i><i class="f"></i><i class="r"></i><i class="v" style="left: 0%; width: 100%;"></i></div><div class="jslider-pointer" style="left: 0%;"></div><div class="jslider-pointer jslider-pointer-to" style="left: 100%;"></div><div class="jslider-label"><span>,00</span></div><div class="jslider-label jslider-label-to"><span>24,00</span>&nbsp;</div><div class="jslider-value" style="visibility: visible; left: 0%; margin-left: 0px; right: auto;"><span>,00</span>&nbsp;</div><div class="jslider-value jslider-value-to" style="visibility: visible; left: 100%; margin-left: 0px; right: auto;"><span>24,00</span>&nbsp;</div><div class="jslider-scale"></div></td></tr></tbody></table></span>
+                                                                </div>
+                                                                <p>Arrive Time</p>
+                                                                <div class="layout-slider">
+                                                                    <input id="Arrive-range-slider" type="slider" name="area" value="0;24" style="display: none;"><span class="jslider jslider_round_plastic"><table><tbody><tr><td><div class="jslider-bg"><i class="l"></i><i class="f"></i><i class="r"></i><i class="v" style="left: 0%; width: 100%;"></i></div><div class="jslider-pointer" style="left: 0%;"></div><div class="jslider-pointer jslider-pointer-to" style="left: 100%;"></div><div class="jslider-label"><span>,00</span></div><div class="jslider-label jslider-label-to"><span>24,00</span>&nbsp;</div><div class="jslider-value" style="visibility: visible; left: 0%; margin-left: 0px; right: auto;"><span>,00</span>&nbsp;</div><div class="jslider-value jslider-value-to" style="visibility: visible; left: 100%; margin-left: 0px; right: auto;"><span>24,00</span>&nbsp;</div><div class="jslider-scale"></div></td></tr></tbody></table></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12  hidden">
+                                                            <h5 class="bolder">
+                                                                Connection Time <span href="#flt_nav4" class="pull-right p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav4" class="active collapse in">
+                                                                <div class="form-group">
+                                                                    <label> Show Layovers up to: </label>
+                                                                    <select class="form-control">
+                                                                        <option selected="selected">25 Hours</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12  hidden">
+                                                            <h5 class="bolder">
+                                                                Dates <span href="#flt_nav5" class="pull-right p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav5" class="active collapse in">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" id="">
+                                                                        Show flexible dates
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" hidden="">
+                                                            <h5 class="bolder">
+                                                                Airports <span href="#flt_nav6" class="pull-right p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav6" class="active collapse in">
+                                                                <h6>Departing from</h6>
+                                                                <div id="Div_Search-Result-Departing"><div class="checkbox row"><div class="col-md-7" style="padding-right:0"><label><input type="checkbox" id="id='YYZ'" name="AirlinesGroup" value="YYZ" checked="checked">YYZ </label></div><div class="col-md-5" style="padding-left:0"></div></div><div class="checkbox row"><div class="col-md-7" style="padding-right:0"><label><input type="checkbox" id="id='LHR'" name="AirlinesGroup" value="LHR" checked="checked">LHR </label></div><div class="col-md-5" style="padding-left:0"></div></div><div class="checkbox row"><div class="col-md-7" style="padding-right:0"><label><input type="checkbox" id="id='DUB'" name="AirlinesGroup" value="DUB" checked="checked">DUB </label></div><div class="col-md-5" style="padding-left:0"></div></div><div class="checkbox row"><div class="col-md-7" style="padding-right:0"><label><input type="checkbox" id="id='PHL'" name="AirlinesGroup" value="PHL" checked="checked">PHL </label></div><div class="col-md-5" style="padding-left:0"></div></div><div class="checkbox row"><div class="col-md-7" style="padding-right:0"><label><input type="checkbox" id="id='CLT'" name="AirlinesGroup" value="CLT" checked="checked">CLT </label></div><div class="col-md-5" style="padding-left:0"></div></div></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 airlist" style="line-height:1.5;">
+                                                            <h5 class="bolder">
+                                                                Airlines <span href="#flt_nav7" class="pull-right p-toggle sortable" data-toggle="collapse">
+                                                                    <i class="fa fa-caret-right fa-fw"></i>
+                                                                    <i class="fa fa-caret-down fa-fw"></i>
+                                                                </span>
+                                                            </h5>
+                                                            <div id="flt_nav7" class="active collapse in">
+                                                                <div id="Div_Search-Result-Airlines">
+                                                                    @Html.Raw(distinctAirlines)
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="col-md-12    hidden">
+                                                            <button class="btn ">Clear all filters</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-toolbox clearfix center">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="widget-box Result_Div_Panel hidden" id="Result_Div_Panel">
+                                            <div class="widget-header" style="display:none;">
+                                                <h5 class="widget-title">Search Result</h5>
+                                            </div>
+                                            <div class="widget-body">
+                                                <div class="widget-main no-padding">
+                                                    <div class="col-md-12 Search-Widgets-Result-Panel no-padding" id="Search-Widgets-Result-Grid">
+                                                        <!-- Airline Grid -->
+                                                    </div>
+                                                    <div class="col-md-12 Search-Widgets-Result-Panel no-padding" id="Search-Widgets-Result-Panel"></div>
+                                                    <table class="table table-bordered table-striped hidden" id="Air_Search_Result_Table">
+                                                        <thead class="widget-header">
+                                                            <tr>
+                                                                @*<th>S.N.</th>*@
+                                                                <th>AIRLINE</th>
+                                                                <th>DEPART &nbsp;<i class="fa fa-plane"></i></th>
+                                                                <th>ARRIVE &nbsp;<i class="fa fa-plane"></i></th>
+                                                                <th>PRICE</th>
+                                                                <th>DURATION </th>
+                                                                <th>ACTION</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbl_Search-Result-Body"></tbody>
+                                                    </table>
+
+                                                    <div class="col-md-12 Search-Result-Panel" id="Search-Result-Panel"></div>
+                                                    <br />
+                                                    <div class="col-md-12 Search-josn-Result-Panel" id="Search-josn-Result-Panel"></div>
+                                                    <br />
+                                                    <button type="submit" class="btn btn-inverse btn-white btn-xs  josn-Result-Viewer pull-left hidden" value="josn Viewer" id="josn-Result-Viewer">
+                                                        <i class="ace-icon glyphicon glyphicon-ok"></i>
+                                                    </button>
+                                                    <br />
+                                                    <div class="col-md-12 Search-josn-Result-renderer hidden" id="Search-josn-Result-renderer"></div>
+                                                </div>
+                                                <!--/widget-main-->
+                                                <div class="widget-toolbox clearfix center">
+                                                </div>
+                                            </div>
+                                            <!--/widget-body-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- filter panel ends here -->
+                            <!----Stops tab ----->
+                            <div class="search_widget" id="stops-tab">
+
+                                <div class="search-area">
+
+                                    <div class="head">
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5>Stops</h5>
+                                            </div>
+                                            <div class="col-sm-5 text-right">
+                                                <h5>From</h5>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Stop Filter-->
+                                    @Html.Raw(stopfilters)
+                                    <!-- End Stop Filter-->
+                                    <hr>
+
+                                    <div class="head">
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5>Preferred Airlines</h5>
+                                            </div>
+                                            <div class="col-sm-5 text-right">
+                                                <a href="#">Reset</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!--row -->
+                                    @Html.Raw(preferredAirlines)
+                                    <!--row //-->
+
+
+                                </div>
+
+                            </div>
+                            <!----End Stops tab ----->
+
+
+
+                        </div>
+
+                        <!-- End Search -->
+
+                    </div>
+
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <input type="hidden" id="hdnFareType" value="@ViewData["FareType"]" />
+        <input type="hidden" id="hdnAirlineText" value="@ViewData["AirlineText"]" />
+
+        @Html.Raw(filtered_search_response)
+    </div>
+</div>
+<link href="http://qa.nanojot.com/services/SearchWidget-v2/search/vertical/css/jquery-ui.css?version=202101220745" rel="stylesheet" />
+<link href="~/Content/Internal-Widget/css/internal-search-widget.css" rel="stylesheet" />
+<link href="~/Content/Internal-Widget/css/internal-search-widget-tabs.css" rel="stylesheet" />
+<link href="~/Content/Internal-Widget/css/jslider.css" rel="stylesheet" />
+<link href="~/Content/Internal-Widget/css/jslider.round.plastic.css" rel="stylesheet" />
+
+@section Scripts{
+
+    <script src="~/Content/Internal-Widget/js/easyResponsiveTabs.js"></script>
+    <script src="~/Content/Internal-Widget/js/search-w.js"></script>
+    <script src="~/Content/Internal-Widget/js/autocomplete.js"></script>
+    <!--Plug-in Initialisation-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Horizontal Tab
+            $('.parentHorizontalTab').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true, // 100% fit in a container
+                tabidentify: 'hor_1', // The tab groups identifier
+                activate: function (event) { // Callback function if tab is switched
+                    var $tab = $(this);
+                   //=== var $info = $('#nested-tabInfo');
+                    var $name = $('span', $info);
+                    $name.text($tab.text());
+                    $info.show();
+                }
+            });
+            $('.child-parentHorizontalTab').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true, // 100% fit in a container
+                tabidentify: 'hor_child_2', // The tab groups identifier
+                activate: function (event) { // Callback function if tab is switched
+                    var $tab = $(this);
+                   //=== var $info = $('#nested-tabInfo');
+                    var $name = $('span', $info);
+                    $name.text($tab.text());
+                    $info.show();
+                }
+            });
+            debugger;
+            var cabinTypeSelVal = $('#hdnFareType').val();
+            $('#RFareType option[value="' + cabinTypeSelVal + '"]').attr("selected", "selected");
+
+        });
+    </script>
+    <script>
+        function ShowModal() {
+            $('#modalContent').html(data);
+            $('#flightDetailsModal').modal(options);
+            $('#flightDetailsModal').modal('show');
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            try {
+                $('.airlineCheckbox').change(function () {
+                    var DisAirlies = new Array();
+                    $('#Div_Search-Result-Airlines input[type="checkbox"]:checked').each(function () {
+                        DisAirlies.push($(this).val());
+                    });
+                    //=== alert(DisAirlies);
+                    $.ajax({
+                        type: "POST",
+                        url: '/Quotes/GetTest',
+                        data: ({ DisAirlies: DisAirlies }),
+                        dataType: 'json',
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            $('#Div_Search-Result-Airlines').empty().append(response);
+                        }
+                    });
+                });
+            } catch (e) {
+                alert(e);
+                var error = e;
+                error = error;
+            }
+            debugger;
+            var searchtype = $('#selectedtype').val();
+
+            if (searchtype == "R") {
+                $('#tab-1').prop('checked', true);
+            }
+            else if (searchtype == "O") {
+                $('#tab-2').prop('checked', true);
+            }
+            else if (searchtype == "M") {
+                debugger;
+                 $('#tab-3').prop('checked', true);
+
+                if ($('.multiButtonAdd').parentsUntil(".multiOneActive")) {
+                    $(".multiClass").children().find(".deleteRoom").show();
+                }
+                if ($('#MBdep2').val() != 'xxx' && $('#MBarr2').val() != 'xxx') {
+                    $(".multicity_options").children(".multiOne").addClass("multiOneActive");
+                    $(".multiButtonDel").removeClass("removeDelButton");
+                    $(".multiButtonAdd").removeClass("removeAddButton");
+                }
+
+                if ($('#MBdep2').val() != 'xxx' && $('#MBarr2').val() != 'xxx' && $('#MBdep3').val() != 'xxx' && $('#MBarr3').val() != 'xxx') {
+                    $(".multicity_options").children(".multiTwo").addClass("multiOneActive");
+                    $(".multiButtonAdd").addClass("removeAddButton");
+                    $(".multiButtonDel").removeClass("removeDelButton");
+                }
+
+            }
+        });
+    </script>
+
+}
+
+
+

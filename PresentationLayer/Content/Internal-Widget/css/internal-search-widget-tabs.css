@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+#block-S { display:block!important;}
+.tabs-section .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+.tabs-section .input {
+  position: absolute;
+  opacity: 0;
+}
+.tabs-section .label {
+  width: 100%;
+  padding: 0px 23px 9px 0px;
+  
+  cursor: pointer;
+  
+  font-size: 14px;
+  color: #7f7f7f;
+  transition: background 0.1s, color 0.1s;
+}
+.tabs-section .label:hover {
+ /* background: #d8d8d8;*/
+}
+.tabs-section .label:active {
+ /* background: #ccc;*/
+}
+.tabs-section .input:focus + .label {
+ /* box-shadow: inset 0px 0px 0px 3px #2aa1c0;*/
+  z-index: 1;
+}
+
+.tabs-section .input:checked + .label {
+    background: #f9f9f9;
+    color: #000;
+    margin-top: -1px;
+}
+.internal-widget .input:checked + .label {
+border-bottom: 1px solid #f9f9f9 !important;
+}
+
+@media (min-width: 600px) {
+  .tabs-section .label {
+    width: auto;
+  }
+}
+.tabs-section .panel {
+  display: none;
+ /* padding: 20px 30px 30px;*/
+  /*background: #fff;*/
+  border:none;
+}
+.internal-widget .panel {
+	padding: 7px 7px 0px;
+}
+
+
+@media (min-width: 600px) {
+ .tabs-section .panel {
+    order: 99;
+  }
+}
+.tabs-section .input:checked + .label + .panel {
+  display: block;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .tabs-section .tabs {max-width:333px;}
+}

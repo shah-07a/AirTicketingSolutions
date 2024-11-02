@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>@ViewBag.Title - Air Solution Version-II</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css?version=20210122" />
+    <link rel="stylesheet" href="~/Content/easy-responsive-tabs.css?version=20210122" />
+    <link rel="stylesheet" href="~/Content/Style.css?version=20210122" />
+    <link rel="icon" type="image/x-icon" href="~/Content/Internal-Widget/images/favicon.png" />
+    <link href="~/Content/Internal-Widget/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/Internal-Widget/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!--<link href="~/Content/Internal-Widget/css/internal-search-widget.css" rel="stylesheet" />
+    <link href="~/Content/Internal-Widget/css/internal-search-widget-tabs.css" rel="stylesheet" />
+    <link href="~/Content/Internal-Widget/css/jslider.css" rel="stylesheet" />
+    <link href="~/Content/Internal-Widget/css/jslider.round.plastic.css" rel="stylesheet" /> -->
+    <script src="~/Scripts/jquery-3.4.1.min.js?version=20210122"></script>
+    <link href="~/Content/login-bar.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js?version=202101220745"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-inverse">
+            <div id="login-bar">
+                @{
+                    string loginParameters = string.Empty;
+                    if (Session["LoginParameters"] != null)
+                    {
+                        loginParameters = Session["LoginParameters"].ToString();
+                    }
+
+
+                    if (loginParameters.Split('|')[4] != "invalidauthtoken")
+                    {
+                        <ul class="top-login navbar-right">
+                            <li style="position:relative;" class="dropdown L-btn">
+                                <a class="" role="button" aria-haspopup="true" aria-expanded="false" data-url="" id="btn-lg" style="color: white;">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                </a>
+                                <span id="btn-lg_caret" class="caret dropdown-toggle"></span>
+                                <ul class="dropdown-menu login-menu" style="display:none;">
+                                    <!--<li class="dropdown-item" id="lnk-myprofile"><a href="http://qa.nanojot.com/services/AirWebApi/auth/Account/UpdateProfile?myprofile_parms=@loginParameters" id="a-myprofile"></a></li>
+    <li class="dropdown-item"><a href="http://qa.nanojot.com/services/AirWebApi/auth/Account/Logoff?returnUrl=@loginParameters" id="lnk-login"></a></li> -->
+                                    <li class="dropdown-item" id="lnk-myprofile"><a href="http://qa.nanojot.com/services/AirWebApi/auth/Account/UpdateProfile?myprofile_parms=@loginParameters" id="a-myprofile"></a></li>
+                                    <li class="dropdown-item"><a href="http://qa.nanojot.com/services/AirWebApi/auth/Account/Logoff?returnUrl=@loginParameters" id="lnk-login"></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+
+
+                    <input type="hidden" id="loginstatus" value="@loginParameters" />
+                }
+            </div>
+
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Nanojot Air Solution</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="http://qa.nanojot.com/services/SearchWidget-v2/search/vertical/home.html">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servies<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="http://qa.nanojot.com/services/SearchWidget-v2/search/vertical/home.html">Flights</a></li>
+                            <li><a href="#">Hotels</a></li>
+                            <li><a href="#">Rental Cars</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Air Solution Version-II</p>
+        </footer>
+    </div>
+
+
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js?version=20210122"></script>
+    
+    <script>
+        debugger;
+        var loginstatus = $('#loginstatus').val();
+        localStorage.setItem('RequestingClientInfo', loginstatus);
+       
+        if (loginstatus.split('|')[4] == "invalidauthtoken") {
+            $('#login-bar').load("http://qa.nanojot.com/services/SearchWidget-v2/search/vertical/login-bar.html");
+        }
+
+        $(".dropdown-toggle").click(function (event) {
+            $(".login-menu").toggle();
+            event.stopPropagation();
+
+        });
+        $('body').click(function (evt) {
+            if (evt.target.id != "btn-lg_caret") {
+                if ($('.login-menu').css('display') == 'block') {
+                    $('.login-menu').css('display', 'none');
+                }
+            }
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

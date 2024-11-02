@@ -1,0 +1,177 @@
+﻿body {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0px;
+    padding: 0px;
+    color: #332115;
+}
+
+.img-responsive {
+    display: inline-block
+}
+
+a {
+    color: #6b8eaf;
+}
+
+.clear {
+    clear: both;
+}
+
+
+.container {
+    max-width: 1170px;
+}
+
+.top-info {
+    padding: 0px 0px 0px 0px;
+    text-align: right;
+    margin: 0;
+}
+
+    .top-info p {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .top-info a {
+        display: inline-block;
+        font-size: 13px;
+        color: #fff;
+        padding: 5px 15px 5px 15px;
+        margin: 0px 0px 0px 10px;
+    }
+
+    .top-info li a i {
+        border: 2px solid #fff;
+        border-radius: 50%;
+        padding: 5px;
+        /* width: 22px; */
+        /* height: 22px; */
+        font-size: 10px;
+        margin: 1px 5px 0 0;
+    }
+
+li.L-btn {
+}
+
+.blue-strip {
+    background: #5c5c5c;
+    width: 1170px;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+}
+
+    a:hover {
+        outline: none;
+    }
+
+    a img {
+        border: none;
+    }
+
+
+ul.top-login li span.caret {
+    color: #fff;
+    cursor: pointer;
+}
+
+a.book-btn {
+    background: #eaeaea;
+    text-align: center;
+    color: #333 !important;
+}
+
+
+
+#header.sky-header {
+    min-height: auto;
+}
+
+.navbar .navbar-nav > li > a {
+    height: inherit;
+}
+
+
+.container > .navbar-header, .container-fluid > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-collapse {
+}
+
+.navbar {
+    margin-bottom: 0px;
+    position: relative;
+    z-index: 999;
+}
+
+ul.top-login {
+    z-index: 999999;
+    position: relative;
+    margin: 0 0 0 2px !important;
+    padding: 0 !important;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    padding-right: 8px;
+}
+
+ul.top-login li {
+    padding: 0px !important;
+}
+
+    ul.top-login li a:hover {
+        background: transparent !important;
+        color: #fff;
+    }
+
+    ul.top-login li a:focus {
+        background: transparent !important;
+        color: #fff;
+    }
+
+    ul.top-login li ul li a:hover {
+        color: #0087c4 !important;
+    }
+
+.top-login .open > a, .nav .open > a:hover, .top-login .open > a:focus {
+    background-color: transparent !important;
+    border-color: #428bca;
+}
+
+li.L-btn a {
+    display: inline-block !important;
+    padding: 0 0 0 9px;
+    margin: 0;
+}
+
+ul.top-login li {
+    list-style: none;
+    padding: 0 0;
+    margin: 0;
+}
+
+.login-menu {
+    position: absolute;
+   /* background-color: transparent !important; */
+}
+
+@media screen and (max-width:1024px) {
+}
+
+
+@media screen and (max-width:950px) {
+}
+
+
+
+@media screen and (max-width:767px) {
+}
+
+
+
+@media screen and (max-width:480px) {
+}

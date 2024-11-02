@@ -1,0 +1,500 @@
+﻿@using Models.Sabre.JsonModels.FilteredResponse
+
+@{
+    ViewBag.Title = "GetQuotes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    FilteredSearchResponse filtered_search_response = null;
+    if (ViewBag.SearchResponse != null)
+    {
+        filtered_search_response = (FilteredSearchResponse)ViewBag.SearchResponse;
+    }
+}
+
+<div id="flightdetails-panel">
+    @{
+            if (filtered_search_response == null || (string.IsNullOrEmpty(filtered_search_response.Message) == false && filtered_search_response.Message != "HttpClient postAsync excuted successfully" ))
+            {
+            <div class="alertmessage">
+                <h3>No flights are available for the selected criteria, please change your criteria and try again</h3>
+            </div>
+
+        }
+        else
+                {
+                    string validatingAirline = string.Empty;
+                    string validatingAirline1 = string.Empty;
+                    double totalFare = 0;
+
+                    foreach (var priced_itinerary in filtered_search_response.Data.OTA_AirLowFareSearchRS[0].PricedItineraries[0].PricedItinerary)
+                    {
+                        PresentationLayer.Models.ViewModels.QuoteViewModel quoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                        /*=== Fares ===*/
+                        PresentationLayer.Models.Fares fares = new PresentationLayer.Models.Fares();
+                        if (priced_itinerary.AirItineraryPricingInfo.Count > 0)
+                        {
+                            fares = quoteViewModel.GetFares(priced_itinerary.AirItineraryPricingInfo[0], null);
+                            validatingAirline1 = priced_itinerary.AirItineraryPricingInfo[0].TPA_Extensions[0].ValidatingCarrier[0].Default[0].Code;
+                        }
+                        else if (priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo.Count > 0)
+                        {
+                            validatingAirline1 = priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo[0].TPA_Extensions[0].ValidatingCarrier[0].Default[0].Code;
+                            fares = quoteViewModel.GetFares(null, priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo[0]);
+                        }
+
+                        /*=== End Fares ===*/
+                        //=== if(totalFare != fares.TotalFare && validatingAirline != validatingAirline1)
+                        //=== {
+                        totalFare = fares.TotalFare;
+                        validatingAirline = validatingAirline1;
+                        quoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                        PresentationLayer.Models.Quotes objOutbount = quoteViewModel.GetFlightSegments(priced_itinerary.AirItinerary[0].OriginDestinationOptions[0], 0,"");
+                <div class="quote-section">
+                    <!--Horizontal Tab-->
+                    <div id="parentHorizontalTab" class="parentHorizontalTab">
+                        <ul class="tab-style resp-tabs-list hor_1">
+                            <li id="tab1">Summary</li>
+                            <li id="tab2">Flight Details</li>
+                        </ul>
+
+                        <div class="resp-tabs-container hor_1">
+                            <div id="tab1" class="first-content">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <!--outbound starts here -->
+                                        <div class="bound">
+                                            <p><img src="~/Content/images/outbound-icon.png"> Outbound</p> <hr>
+                                            <!-- Modal -->
+                                            @*=== 
+                                            @Ajax.ActionLink("More Flights", "GetOutboundFlightDetails", "Quotes", new { _sequencenumber = priced_itinerary.SequenceNumber, _totalfare = totalFare, _validatingairline = validatingAirline }, new AjaxOptions()
+                                       {
+                                           HttpMethod = "Get",
+                                           OnSuccess = "ShowModal"
+                                       }, new { data_toggle = "modal", data_target = "#flightDetailsModal", data_backdrop = "static", data_Keyboard = "false" })
+                                        ===*@
+                                            <!-- End Modal -->
+                                        </div>
+
+                                        <!--outbound ends here -->
+                                        <div class="clearfix"></div>
+
+                                        <!--summary -->
+                                        <div class="summary">
+                                            <div class="row">
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!-- outbound -->
+                                                    <div class="outbound">
+                                                        @Html.Raw(objOutbount.Flight)
+                                                    </div>
+
+                                                    <!-- outbound //-->
+                                                </div>
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!--departure time -->
+                                                    <div class="departure-time">
+                                                        @Html.Raw(objOutbount.DepatureTime)
+                                                    </div>
+                                                    <!--departure time //-->
+                                                </div>
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!--duration -->
+                                                    <div class="duration">
+                                                        @Html.Raw(objOutbount.Duration)
+                                                    </div>
+                                                    <!--duration //-->
+                                                </div>
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!--arrival time -->
+                                                    <div class="arrival-time">
+                                                        @Html.Raw(objOutbount.ArrivalTime)
+                                                    </div>
+                                                    <!--arrival time //-->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--summary //-->
+                                        <!--inbound starts here -->
+                                        <div class="bound">
+                                            <p><img src="~/Content/images/inbound-icon.png"> Inbound</p> <hr>
+
+                                            <!-- Modal -->
+                                            @*====
+                                             @Ajax.ActionLink("More Flights", "GetInboundFlightDetails", "Quotes", new { _sequencenumber = priced_itinerary.SequenceNumber, _totalfare = totalFare, _validatingairline = validatingAirline }, new AjaxOptions()
+                                        {
+                                            HttpMethod = "Get",
+                                            OnSuccess = "ShowModal"
+                                        }, new { data_toggle = "modal", data_target = "#flightDetailsModal", data_backdrop = "static", data_Keyboard = "false" })
+                                        ===*@
+                                            <!-- End Modal -->
+
+                                        </div>
+                                        <!--inbound ends here -->
+                                        <div class="clearfix"></div>
+                                        <!--summary -->
+                                        <div class="summary">
+                                            <div class="row">
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!-- inbound -->
+                                                    @{
+                                                        quoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                                                        PresentationLayer.Models.Quotes objInbount = null;
+
+                                                        if (priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption.Count > 1)
+                                                        {
+                                                            objInbount = quoteViewModel.GetFlightSegments(priced_itinerary.AirItinerary[0].OriginDestinationOptions[0], 1,"");
+                                                            <div class="inbound">
+                                                                @Html.Raw(objInbount.Flight)
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <!-- inbound //-->
+                                                </div>
+
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!--departure time -->
+                                                    @{
+                                                        if (objInbount != null)
+                                                        {
+                                                            <div class="departure-time">
+                                                                @Html.Raw(objInbount.DepatureTime)
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <!--departure time //-->
+                                                </div>
+
+                                                <div class="col-sm-3col-xs-6">
+                                                    <!--duration -->
+                                                    @{
+                                                        if (objInbount != null)
+                                                        {
+                                                            @Html.Raw(objInbount.Duration)
+                                                        }
+                                                    }
+
+                                                    <!--duration //-->
+                                                </div>
+                                                <div class="col-sm-3 col-xs-6">
+                                                    <!--arrival time -->
+                                                    @{
+                                                        if (priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption.Count > 1)
+                                                        {
+                                                            @Html.Raw(objInbount.ArrivalTime)
+                                                        }
+                                                    }
+                                                    <!--arrival time //-->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--summary //-->
+
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <!--total price -->
+                                        <div class="total-price">
+                                            <div class="functional-icons">
+                                                <a href="#"><img src="~/Content/images/email-icon.png"></a>
+                                                <a href="#"><img src="~/Content/images/print-icon.png"></a>
+                                            </div>
+
+                                            <p>
+                                                Total Price: @fares.Currency@fares.EquivFare.ToString("0.##")+ @fares.Currency@fares.Taxes.ToString("0.##") (taxes) = <span> @fares.Currency@fares.TotalFare.ToString("0.##") </span>
+
+                                            </p>
+
+                                            <div class="avg">(@fares.FareCalculationType)</div>
+
+                                            <div class="book-btn"><a href="#">Book Now <img src="~/Content/images/plane-icon.png"></a></div>
+
+                                        </div>
+
+                                        <!--total price //-->
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div id="tab2">
+
+                                <!--flight total price -->
+                                <div class="flight-total-price">
+                                    <p>
+                                        Total Price: @fares.Currency@fares.EquivFare.ToString("0.##")+@fares.Currency @fares.Taxes.ToString("0.##") (taxes) = <span> @fares.Currency@fares.TotalFare.ToString("0.##") </span>
+                                    </p>
+
+                                    <div class="avg">(@fares.FareCalculationType)</div>
+
+                                    <div class="book-btn"><a href="#">Book Now <img src="~/Content/images/plane-icon.png"></a></div>
+
+                                    <div class="flight-functional-icons">
+
+                                        <a href="#"><img src="~/Content/images/email-icon.png"></a>
+
+                                        <a href="#"><img src="~/Content/images/print-icon.png"></a>
+
+                                    </div>
+
+                                </div>
+
+                                <!--flight total price //-->
+                                <div class="clearfix"></div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-7">
+
+                                        <!-- child tab -->
+
+                                        <div id="child-parentHorizontalTab" class="child-parentHorizontalTab">
+
+                                            <ul class="resp-tabs-list hor_child_2">
+
+                                                <li id="tab4"><img src="~/Content/images/outbound-icon-small.png"> Outbound</li>
+
+                                                <li id="tab5"><img src="~/Content/images/inbound-icon-small.png"> Inbound</li>
+
+                                            </ul>
+
+                                            <div class="resp-tabs-container hor_child_2">
+
+                                                <div id="tab4">
+                                                    @{
+                                                        string cabin = "Economy";
+                                                        string meal = "M";
+                                                        if (priced_itinerary.AirItineraryPricingInfo != null && priced_itinerary.AirItineraryPricingInfo.Count > 0)
+                                                        {
+                                                            cabin = "Economy"; //=== priced_itinerary.AirItineraryPricingInfo[0].PTC_FareBreakdowns[0].PTC_FareBreakdown[0].FareInfos[0].TPA_Extensions[0].Cabin[0].Cabins;
+                                                            meal = "M"; //=== priced_itinerary.AirItineraryPricingInfo[0].PTC_FareBreakdowns[0].PTC_FareBreakdown[0].FareInfos[0].TPA_Extensions[0].Meal[0].Code;
+                                                        }
+                                                        else if (priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo != null && priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo.Count > 0)
+                                                        {
+                                                            cabin = "Economy";//=== priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo[0].PTC_FareBreakdowns[0].PTC_FareBreakdown[0].FareInfos[0].FareInfo[0].TPA_Extensions[0].Cabin[0].Cabins;
+                                                            meal = "M"; //=== priced_itinerary.TPA_Extensions[0].AdditionalFares[0].AirItineraryPricingInfo[0].PTC_FareBreakdowns[0].PTC_FareBreakdown[0].FareInfos[0].FareInfo[0].TPA_Extensions[0].Meal[0].Code;
+                                                        }
+                                                        foreach (var flightSegments in priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption[0].FlightSegment)
+                                                        {
+                                                            quoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                                                            PresentationLayer.Models.Quotes objOutboundFlights = quoteViewModel.GetFlightSegmentDetails(flightSegments);
+
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-xs-8">
+                                                                    <!-- flight-detail-outbound -->
+                                                                    <div class="flight-detail-outbound">
+                                                                        @Html.Raw(objOutboundFlights.Flight)
+                                                                    </div>
+                                                                    <!-- flight-detail-outbound //-->
+                                                                </div>
+                                                                <div class="col-sm-6 col-xs-4">
+                                                                    <div class="cabin">(@cabin)</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="row">
+                                                                <div class="col-sm-5 col-xs-8">
+                                                                    <!--detail-flight -->
+                                                                    <div class="detail-flight">
+                                                                        @Html.Raw(objOutboundFlights.DepatureTime)
+                                                                    </div>
+                                                                    <!--detail-flight //-->
+                                                                </div>
+                                                                <div class="col-sm-2 col-xs-4">
+                                                                    <!--duration -->
+                                                                    <div class="duration-detail">
+                                                                        <img src="~/Content/images/duration-icon.png">
+                                                                        @Html.Raw(objOutboundFlights.Duration)
+                                                                    </div>
+                                                                    <!--duration //-->
+                                                                </div>
+                                                                <div class="col-sm-5 col-xs-12">
+                                                                    <!--detail-flight -->
+                                                                    <div class="detail-flight right-txt">
+                                                                        @Html.Raw(objOutboundFlights.ArrivalTime)
+                                                                    </div>
+                                                                    <!--detail-flight //-->
+                                                                </div>
+                                                            </div>
+                                                            <div class="layover">Layover 00h :00m</div>
+
+                                                        }
+                                                        int elapsedTime = priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption[0].ElapsedTime;
+                                                        int elapsedHours = elapsedTime / 60;
+                                                        int elapsedMinutes = elapsedTime % 60;
+                                                        string totalTripDuration = elapsedHours + "hr " + elapsedMinutes + "min";
+                                                        <div class="total-trip">Total Trip Duration @totalTripDuration</div>
+                                                    }
+                                                </div>
+                                                <div id="tab5">
+                                                    @{
+                                                        if (priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption.Count > 1)
+                                                        {
+                                                            foreach (var flightSegments in priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption[1].FlightSegment)
+                                                            {
+                                                                quoteViewModel = new PresentationLayer.Models.ViewModels.QuoteViewModel();
+                                                                PresentationLayer.Models.Quotes objInboundFlights = quoteViewModel.GetFlightSegmentDetails(flightSegments);
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-6 col-xs-8">
+                                                                        <!-- flight-detail-outbound -->
+                                                                        <div class="flight-detail-outbound">
+                                                                            @Html.Raw(objInboundFlights.Flight)
+                                                                        </div>
+                                                                        <!-- flight-detail-outbound //-->
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-xs-4">
+                                                                        <div class="cabin">(@cabin)</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-5 col-xs-8">
+                                                                        <!--detail-flight -->
+                                                                        <div class="detail-flight">
+                                                                            @Html.Raw(objInboundFlights.DepatureTime)
+                                                                        </div>
+                                                                        <!--detail-flight //-->
+                                                                    </div>
+                                                                    <div class="col-sm-2 col-xs-4">
+                                                                        <!--duration -->
+                                                                        <div class="duration-detail">
+                                                                            <img src="~/Content/images/duration-icon.png">
+                                                                            @Html.Raw(objInboundFlights.Duration)
+                                                                        </div>
+                                                                        <!--duration //-->
+                                                                    </div>
+                                                                    <div class="col-sm-5 col-xs-12">
+                                                                        <!--detail-flight -->
+                                                                        <div class="detail-flight right-txt">
+                                                                            @Html.Raw(objInboundFlights.ArrivalTime)
+                                                                        </div>
+                                                                        <!--detail-flight //-->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="layover">Layover 12h :25m</div>
+                                                            }
+                                                            elapsedTime = priced_itinerary.AirItinerary[0].OriginDestinationOptions[0].OriginDestinationOption[1].ElapsedTime;
+                                                            elapsedHours = elapsedTime / 60;
+                                                            elapsedMinutes = elapsedTime % 60;
+                                                            totalTripDuration = elapsedHours + "hr " + elapsedMinutes + "min";
+                                                            <div class="total-trip">Total Trip Duration @totalTripDuration</div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- child tab //-->
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="flight-detail-right-section">
+                                            <div class="full-row">
+                                                <h5>Baggage </h5> <p>Quantity: @fares.BaggagesPenalties.BagQntyCheckIn</p>
+                                            </div>
+                                            <div class="full-row">
+                                                <h5>Change Fee </h5> <p>Before Departure: <span>@fares.BaggagesPenalties.ChangeBefore</span><br>After Departure: <span>@fares.BaggagesPenalties.ChangeAfter</span></p>
+                                            </div>
+                                            <div class="full-row">
+                                                <h5>Cancellation Fee </h5> <p>Before Departure: <span>@fares.BaggagesPenalties.CancellationBefore</span><br>After Departure: <span>@fares.BaggagesPenalties.CancellationAfter</span></p>
+                                            </div>
+                                            <div class="baggage-section">
+                                                <div class="row">
+                                                    <div class="col-sm-4 right-border col-xs-4">
+                                                        <div class="baggage-info">
+                                                            <title>Baggage</title>
+                                                            <p>Adult</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 right-border col-xs-4">
+                                                        <div class="baggage-info">
+                                                            <title>Cabin</title>
+                                                            <p>5-7 Kg</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 col-xs-4">
+                                                        <div class="baggage-info">
+                                                            <title>Check-in</title>
+                                                            <p>20Kg</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--other-features-->
+                                            <div class="other-features">
+                                                <ul>
+                                                    <li><img src="~/Content/images/wifi-icon.png"> Wifi</li>
+                                                    <li><img src="~/Content/images/power-icon.png"> In seat Power</li>
+                                                    <li><img src="~/Content/images/food-icon.png"> Food</li>
+                                                    <li><img src="~/Content/images/video-icon.png"> On demand video</li>
+                                                </ul>
+                                            </div>
+                                            <!--other-features //-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                                                               //=== }
+                                                            }
+                                                        }
+
+    }
+    <!-- Modal -->
+    <div class="modal modal-box fade" id="flightDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modalContent">
+                <!-- Flight Details Section -->
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+</div>
+            @section Scripts{
+                <!--Plug-in Initialisation-->
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        //Horizontal Tab
+                        $('.parentHorizontalTab').easyResponsiveTabs({
+                            type: 'default', //Types: default, vertical, accordion
+                            width: 'auto', //auto or any width like 600px
+                            fit: true, // 100% fit in a container
+                            tabidentify: 'hor_1', // The tab groups identifier
+                            activate: function (event) { // Callback function if tab is switched
+                                var $tab = $(this);
+                              //===  var $info = $('#nested-tabInfo');
+                                var $name = $('span', $info);
+                                $name.text($tab.text());
+                                $info.show();
+                            }
+                        });
+                        $('.child-parentHorizontalTab').easyResponsiveTabs({
+                            type: 'default', //Types: default, vertical, accordion
+                            width: 'auto', //auto or any width like 600px
+                            fit: true, // 100% fit in a container
+                            tabidentify: 'hor_child_2', // The tab groups identifier
+                            activate: function (event) { // Callback function if tab is switched
+                                var $tab = $(this);
+                                //===var $info = $('#nested-tabInfo');
+                                var $name = $('span', $info);
+                                $name.text($tab.text());
+                                $info.show();
+                            }
+                        });
+
+
+                    });
+                </script>
+                <script>
+                    function ShowModal() {
+                        $('#modalContent').html(data);
+                        $('#flightDetailsModal').modal(options);
+                        $('#flightDetailsModal').modal('show');
+                    }
+                </script>
+            }
+
